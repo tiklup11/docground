@@ -5,8 +5,8 @@ import type { Range, Editor } from "@tiptap/core"; // Import Node type
 import StarterKit from "@tiptap/starter-kit";
 import { Markdown } from "tiptap-markdown";
 import Placeholder from "@tiptap/extension-placeholder";
-import TaskList from "@tiptap/extension-task-list";
-import TaskItem from "@tiptap/extension-task-item";
+import { TextTaskList } from "../../editor/extensions/textTaskList";
+import { TextTaskItem } from "../../editor/extensions/textTaskItem";
 import {
   SlashCommandItem,
   slashCommands,
@@ -159,8 +159,18 @@ const LiveMarkdownEditor: React.FC<LiveMarkdownEditorProps> = ({
         },
         includeChildren: true,
       }),
-      TaskList,
-      TaskItem.configure({ nested: true }),
+      TextTaskList.configure({
+        itemTypeName: 'textTaskItem',
+        HTMLAttributes: {
+          class: 'text-task-list',
+        },
+      }),
+      TextTaskItem.configure({ 
+        nested: true,
+        HTMLAttributes: {
+          class: 'task-item-text-based',
+        },
+      }),
       SlashCommandExtension.configure({
         onActivate: openSlashMenu,
       }),

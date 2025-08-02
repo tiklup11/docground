@@ -72,7 +72,7 @@ export const slashCommands: SlashCommandItem[] = [
     aliases: ["todo", "task"],
     description: "Track tasks with a checklist",
     command: ({ editor }) => {
-      editor.chain().focus().toggleTaskList().run();
+      editor.chain().focus().toggleTextTaskList().run();
     },
   },
   {
@@ -107,14 +107,12 @@ export const slashCommands: SlashCommandItem[] = [
     title: "Table",
     aliases: ["tbl"],
     description: "Create a simple table",
-    command: ({ editor, range }) => {
-      // Keep range here as insertTable might benefit from it or for consistency
+    command: ({ editor }) => {
+      // Deletion is now handled by LiveMarkdownEditor.tsx before this command
       editor
         .chain()
         .focus()
-        // .deleteRange(range) // Deletion is now handled by LiveMarkdownEditor.tsx before this command
         .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-        // .focus() // insertTable usually handles focus
         .run();
     },
   },

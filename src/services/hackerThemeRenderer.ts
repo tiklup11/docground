@@ -1,6 +1,7 @@
 // src/services/hackerThemeRenderer.ts
 import { Marked } from "marked";
 import type { MarkedExtension } from "marked";
+import DOMPurify from "dompurify";
 
 // Define the options for the Marked instance
 // No custom renderer is used here; we rely on default Marked rendering.
@@ -20,13 +21,8 @@ export const hackerThemeRenderer = {
     try {
       const rawHtml = markedInstance.parse(markdown) as string;
 
-      // IMPORTANT SECURITY NOTE:
-      // If the markdown content can come from untrusted users, `rawHtml` MUST be sanitized here
-      // before being used with `dangerouslySetInnerHTML`.
-      // Example using DOMPurify (install and import it first):
-      // import DOMPurify from 'dompurify';
-      // return DOMPurify.sanitize(rawHtml);
-      return rawHtml;
+      // Sanitize HTML to prevent XSS attacks
+      return DOMPurify.sanitize(rawHtml);
     } catch (error) {
       console.error("Error parsing Markdown:", error);
       return "<p>Error rendering Markdown.</p>";
