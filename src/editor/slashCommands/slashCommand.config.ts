@@ -125,4 +125,39 @@ export const slashCommands: SlashCommandItem[] = [
       editor.chain().focus().setParagraph().run();
     },
   },
+  {
+    id: "link",
+    title: "Link",
+    aliases: ["url", "hyperlink"],
+    description: "Create a link from selected text",
+    command: ({ editor }) => {
+      const selectedText = editor.state.selection.empty ? '' : editor.state.doc.textBetween(editor.state.selection.from, editor.state.selection.to);
+      
+      if (selectedText) {
+        // If text is selected, prompt for URL
+        const url = window.prompt('Enter the URL:', 'https://');
+        if (url) {
+          editor.chain().focus().setLink({ href: url }).run();
+        }
+      } else {
+        // If no text selected, prompt for both text and URL
+        const text = window.prompt('Enter link text:');
+        if (text) {
+          const url = window.prompt('Enter the URL:', 'https://');
+          if (url) {
+            editor.chain().focus().insertContent(`<a href="${url}">${text}</a>`).run();
+          }
+        }
+      }
+    },
+  },
+  {
+    id: "unlink",
+    title: "Remove Link", 
+    aliases: ["unlink"],
+    description: "Remove link formatting",
+    command: ({ editor }) => {
+      editor.chain().focus().unsetLink().run();
+    },
+  },
 ];

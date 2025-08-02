@@ -269,6 +269,30 @@
 }
 .ProseMirror hr {}
 
+/* --- Link Styling --- */
+.ProseMirror a, 
+.ProseMirror a:link, 
+.ProseMirror a:visited {
+  color: #63c0f5 !important;
+  text-decoration: underline !important;
+  text-shadow: none !important;
+  cursor: pointer !important;
+}
+
+.ProseMirror a:hover {
+  color: #63c0f5 !important;
+  text-decoration: underline !important;
+  text-shadow: none !important;
+  cursor: pointer !important;
+}
+
+.ProseMirror a:focus {
+  outline: 1px solid #63c0f5;
+  outline-offset: 2px;
+  border-radius: 2px;
+  text-shadow: none !important;
+}
+
 
 /* --- Slash Command Menu Styling --- */
 .tippy-box[data-theme~='slash-command-theme'] {

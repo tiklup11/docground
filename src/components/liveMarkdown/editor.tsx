@@ -6,6 +6,7 @@ import type { Range, Editor } from "@tiptap/core"; // Import Node type
 import StarterKit from "@tiptap/starter-kit";
 import { Markdown } from "tiptap-markdown";
 import Placeholder from "@tiptap/extension-placeholder";
+import Link from "@tiptap/extension-link";
 import { TextTaskList } from "../../editor/extensions/textTaskList";
 import { TextTaskItem } from "../../editor/extensions/textTaskItem";
 import {
@@ -170,6 +171,17 @@ const LiveMarkdownEditor: React.FC<LiveMarkdownEditorProps> = ({
           return "";
         },
         includeChildren: true,
+      }),
+      Link.configure({
+        openOnClick: true, // Allow links to be clicked
+        HTMLAttributes: {
+          class: 'editor-link',
+          target: '_blank', // Open in new tab
+          rel: 'noopener noreferrer', // Security attributes
+        },
+        protocols: ['http', 'https', 'mailto'],
+        autolink: true, // Auto-convert URLs to links
+        linkOnPaste: true, // Convert URLs in pasted content to links
       }),
       TextTaskList.configure({
         itemTypeName: 'textTaskItem',
