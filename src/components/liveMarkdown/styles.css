@@ -270,6 +270,129 @@
   font-size: inherit !important;
 }
 
+/* --- Custom Code Block with Copy Button --- */
+.ProseMirror .code-block-wrapper {
+  margin: 0.5em 0;
+}
+
+.ProseMirror .code-block-container {
+  position: relative;
+  background: rgba(0,0,0,0.9);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 4px;
+  overflow: visible; /* Allow dropdown to extend outside */
+}
+
+.ProseMirror .code-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: rgba(0,0,0,0.5);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  font-size: 12px;
+}
+
+.ProseMirror .code-block-language-dropdown {
+  position: relative;
+}
+
+.ProseMirror .code-block-language-button {
+  background: transparent;
+  border: none;
+  color: #b5e853;
+  padding: 0;
+  font-size: 12px;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+}
+
+.ProseMirror .code-block-language-button:hover {
+  color: #c7f066;
+}
+
+.ProseMirror .code-block-language-options {
+  position: fixed;
+  background: #0a0a0a;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.8);
+  z-index: 9999;
+  min-width: 120px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 4px;
+}
+
+.ProseMirror .code-block-language-option {
+  padding: 6px 10px;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-size: 11px;
+  color: #eaeaea;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.ProseMirror .code-block-language-option:last-child {
+  border-bottom: none;
+}
+
+.ProseMirror .code-block-language-option:hover {
+  background: #1a1a1a;
+  color: #b5e853;
+}
+
+.ProseMirror .code-block-language-option.selected {
+  background: #b5e853;
+  color: #151515;
+  font-weight: bold;
+}
+
+.ProseMirror .code-block-copy-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #eaeaea;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ProseMirror .code-block-copy-btn:hover {
+  background: rgba(255,255,255,0.2);
+  border-color: rgba(255,255,255,0.3);
+  color: #b5e853;
+}
+
+.ProseMirror .code-block-container pre {
+  margin: 0;
+  padding: 12px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  overflow-x: auto;
+  overflow-y: visible; /* Allow content to be visible */
+}
+
+.ProseMirror .code-block-container pre:focus {
+  outline: none;
+}
+
+.ProseMirror .code-block-container code {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: #d0d0d0 !important;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace !important;
+}
+
 .ProseMirror blockquote {}
 .ProseMirror h1, .ProseMirror h2, .ProseMirror h3, .ProseMirror h4, .ProseMirror h5, .ProseMirror h6 {
   margin-bottom: 0.5em;

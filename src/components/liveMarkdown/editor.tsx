@@ -7,10 +7,10 @@ import StarterKit from "@tiptap/starter-kit";
 import { Markdown } from "tiptap-markdown";
 import Placeholder from "@tiptap/extension-placeholder";
 import Link from "@tiptap/extension-link";
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { createLowlight } from 'lowlight';
 import { inputRules, textblockTypeInputRule, Extension } from '@tiptap/core';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
+import { CustomCodeBlockExtension } from '../../editor/extensions/customCodeBlockExtension';
 
 // Import common languages for syntax highlighting
 import javascript from 'highlight.js/lib/languages/javascript';
@@ -256,7 +256,7 @@ const LiveMarkdownEditor: React.FC<LiveMarkdownEditorProps> = ({
         autolink: true, // Auto-convert URLs to links
         linkOnPaste: true, // Convert URLs in pasted content to links
       }),
-      CodeBlockLowlight.configure({
+      CustomCodeBlockExtension.configure({
         lowlight,
         HTMLAttributes: {
           class: 'hljs', // For syntax highlighting styles
