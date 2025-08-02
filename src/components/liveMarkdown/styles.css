@@ -258,6 +258,18 @@
   font-size: 0.9em;
 }
 
+/* Remove inline code styling inside code blocks */
+.ProseMirror pre code,
+.ProseMirror .hljs code {
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: inherit !important;
+  border-radius: 0 !important;
+  font-size: inherit !important;
+}
+
 .ProseMirror blockquote {}
 .ProseMirror h1, .ProseMirror h2, .ProseMirror h3, .ProseMirror h4, .ProseMirror h5, .ProseMirror h6 {
   margin-bottom: 0.5em;
