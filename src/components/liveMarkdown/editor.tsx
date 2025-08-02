@@ -51,6 +51,7 @@ const LiveMarkdownEditor: React.FC<LiveMarkdownEditorProps> = ({
 }) => {
   const slashCommandMenuRef = useRef<SlashCommandMenuRef>(null);
   const editorRef = useRef<Editor | null>(null);
+  const slashMenuContainerRef = useRef<HTMLDivElement>(null);
 
   const [isSlashMenuOpen, setIsSlashMenuOpen] = useState(false);
   const [slashMenuQuery, setSlashMenuQuery] = useState("");
@@ -289,6 +290,7 @@ const LiveMarkdownEditor: React.FC<LiveMarkdownEditorProps> = ({
     if (!isSlashMenuOpen || !tiptapEditor) {
       return;
     }
+    
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!isSlashMenuOpenRef.current) {
         return;
@@ -304,9 +306,37 @@ const LiveMarkdownEditor: React.FC<LiveMarkdownEditorProps> = ({
         closeSlashMenuAndFocusEditor();
       }
     };
+
+    const handleClickOutside = (event: MouseEvent) => {
+      console.log('Click detected, menu open:', isSlashMenuOpenRef.current);
+      if (!isSlashMenuOpenRef.current) {
+        return;
+      }
+      
+      const target = event.target as Node;
+      console.log('Click target:', target);
+      
+      // Check if the click target is inside the slash menu container
+      let isInsideSlashMenu = false;
+      if (slashMenuContainerRef.current && target) {
+        isInsideSlashMenu = slashMenuContainerRef.current.contains(target);
+      }
+      
+      console.log('Inside slash menu:', isInsideSlashMenu);
+      
+      // If click is outside slash menu, close it
+      if (!isInsideSlashMenu) {
+        console.log('Closing slash menu due to outside click');
+        closeSlashMenuAndFocusEditor();
+      }
+    };
+
     document.addEventListener("keydown", handleKeyDown, true);
+    document.addEventListener("mousedown", handleClickOutside, true);
+    
     return () => {
       document.removeEventListener("keydown", handleKeyDown, true);
+      document.removeEventListener("mousedown", handleClickOutside, true);
     };
   }, [isSlashMenuOpen, tiptapEditor, closeSlashMenuAndFocusEditor]);
 
@@ -365,6 +395,7 @@ const LiveMarkdownEditor: React.FC<LiveMarkdownEditorProps> = ({
         
         return (
           <div
+            ref={slashMenuContainerRef}
             style={{
               position: "fixed",
               top: `${topPosition}px`,
