@@ -7,6 +7,81 @@ import StarterKit from "@tiptap/starter-kit";
 import { Markdown } from "tiptap-markdown";
 import Placeholder from "@tiptap/extension-placeholder";
 import Link from "@tiptap/extension-link";
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import { createLowlight } from 'lowlight';
+import { inputRules, textblockTypeInputRule, Extension } from '@tiptap/core';
+import { Plugin, PluginKey } from '@tiptap/pm/state';
+
+// Import common languages for syntax highlighting
+import javascript from 'highlight.js/lib/languages/javascript';
+import typescript from 'highlight.js/lib/languages/typescript';
+import python from 'highlight.js/lib/languages/python';
+import css from 'highlight.js/lib/languages/css';
+import html from 'highlight.js/lib/languages/xml';
+import json from 'highlight.js/lib/languages/json';
+import bash from 'highlight.js/lib/languages/bash';
+
+// Create lowlight instance
+const lowlight = createLowlight();
+
+// Register languages
+lowlight.register('javascript', javascript);
+lowlight.register('js', javascript);
+lowlight.register('typescript', typescript);
+lowlight.register('ts', typescript);
+lowlight.register('python', python);
+lowlight.register('py', python);
+lowlight.register('css', css);
+lowlight.register('html', html);
+lowlight.register('xml', html);
+lowlight.register('json', json);
+lowlight.register('bash', bash);
+lowlight.register('sh', bash);
+
+// Custom extension for immediate codeblock trigger
+const InstantCodeBlock = Extension.create({
+  name: 'instantCodeBlock',
+  
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        key: new PluginKey('instantCodeBlock'),
+        appendTransaction(transactions, oldState, newState) {
+          const tr = newState.tr;
+          let modified = false;
+          
+          transactions.forEach(transaction => {
+            if (!transaction.docChanged) return;
+            
+            transaction.steps.forEach(step => {
+              if (step.jsonID === 'replace' || step.jsonID === 'replaceAround') {
+                const { from, to } = step as any;
+                const insertedText = step.slice?.content?.textBetween(0, step.slice.content.size) || '';
+                
+                // Check if we just typed the third backtick
+                if (insertedText === '`') {
+                  const textBefore = newState.doc.textBetween(Math.max(0, from - 2), from);
+                  if (textBefore === '``') {
+                    // We have ```, convert to codeblock
+                    const codeBlockType = newState.schema.nodes.codeBlock;
+                    if (codeBlockType) {
+                      tr.delete(from - 2, from + 1);
+                      tr.setBlockType(from - 2, from - 2, codeBlockType);
+                      modified = true;
+                    }
+                  }
+                }
+              }
+            });
+          });
+          
+          return modified ? tr : null;
+        },
+      }),
+    ];
+  },
+});
+
 import { TextTaskList } from "../../editor/extensions/textTaskList";
 import { TextTaskItem } from "../../editor/extensions/textTaskItem";
 import {
@@ -106,9 +181,7 @@ const LiveMarkdownEditor: React.FC<LiveMarkdownEditorProps> = ({
     extensions: [
       StarterKit.configure({
         heading: { levels: [1, 2, 3, 4, 5, 6] },
-        codeBlock: {
-          /* Using StarterKit's default codeBlock */
-        },
+        codeBlock: false, // Disable StarterKit's basic codeBlock
         // StarterKit includes paragraph, text, bold, italic, strike, horizontalRule, etc.
         // It also includes BulletList, OrderedList, ListItem by default.
       }),
@@ -183,6 +256,33 @@ const LiveMarkdownEditor: React.FC<LiveMarkdownEditorProps> = ({
         autolink: true, // Auto-convert URLs to links
         linkOnPaste: true, // Convert URLs in pasted content to links
       }),
+      CodeBlockLowlight.configure({
+        lowlight,
+        HTMLAttributes: {
+          class: 'hljs', // For syntax highlighting styles
+        },
+        // Add keyboard shortcuts and input rules
+        addKeyboardShortcuts() {
+          return {
+            'Mod-Alt-c': () => this.editor.commands.toggleCodeBlock(),
+          };
+        },
+        addInputRules() {
+          return [
+            // Trigger on ``` followed by space
+            textblockTypeInputRule({
+              find: /^```\s$/,
+              type: this.type,
+            }),
+            // Also try to catch ``` at end of line
+            textblockTypeInputRule({
+              find: /^```$/,
+              type: this.type,
+            }),
+          ];
+        },
+      }),
+      InstantCodeBlock,
       TextTaskList.configure({
         itemTypeName: 'textTaskItem',
         HTMLAttributes: {
