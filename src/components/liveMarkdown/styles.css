@@ -46,7 +46,7 @@
   flex-grow: 1; /* Make the editable area fill its container */
   width: 100%;
   min-height: 300px; /* Minimum editing height */
-  padding: 15px 100px; /* Vertical padding 15px, Horizontal padding 100px */
+  padding: 15px 325px; /* Vertical padding 15px, Horizontal padding 325px */
   box-sizing: border-box;
   outline: none; /* Remove default focus outline */
   border: 1px solid transparent; /* Border is now transparent by default */
@@ -89,27 +89,71 @@
   list-style: none !important;
   padding-left: 1.8em;
   position: relative;
-  margin-bottom: 0.1em; /* Reduced margin for tighter spacing */
-  line-height: 1.3; /* Reduced line-height for more compact items */
+  margin-bottom: 0; /* Remove all bottom margin */
+  margin-top: 0; /* Remove all top margin */
+  line-height: 1.2; /* Further reduced line-height for more compact items */
+  min-height: 1.2em !important; /* Ensure minimum height even when empty */
+  display: block !important;
+}
+
+/* Remove margins from paragraphs inside list items */
+.ProseMirror ul > li p {
+  margin: 0 !important;
+  padding: 0;
+  min-height: 1.2em; /* Ensure paragraph has minimum height */
+}
+
+/* Force content in empty paragraphs to make bullets visible */
+.ProseMirror ul > li p:empty::before {
+  content: "\00a0" !important; /* Non-breaking space */
+  opacity: 0 !important;
+  font-size: 1em !important;
+  line-height: 1.2 !important;
+  display: inline !important;
+}
+
+/* Duplicate removed - consolidated above */
+
+/* Ensure empty list items are visible */
+.ProseMirror ul > li:empty::after {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 1.2em;
+}
+
+/* Show bullets for list items with empty paragraphs */
+.ProseMirror ul > li p:empty::after {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 1.2em;
 }
 
 .ProseMirror ul > li::before {
-  content: ">>";
-  position: absolute;
-  left: 0.3em;
-  top: 0em; /* Adjust if needed with new line-height */
-  color: #b5e853;
-  font-weight: bold;
+  content: ">>" !important;
+  position: absolute !important;
+  left: 0.3em !important;
+  top: 0 !important;
+  color: #b5e853 !important;
+  font-weight: bold !important;
+  line-height: 1.2 !important;
+  display: block !important;
+  z-index: 10 !important;
+  pointer-events: none !important;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace !important;
 }
 
 .ProseMirror li[data-type="textTaskItem"] {
   list-style: none !important;
   padding-left: 0.5em !important;
   margin-left: 0;
-  display: flex;
+  display: flex !important; /* Override the block display for task items */
   align-items: flex-start;
-  margin-bottom: 0.1em; /* Consistent reduced margin */
-  line-height: 1.3; /* Consistent reduced line-height */
+  margin-bottom: 0; /* Match other list items */
+  margin-top: 0; /* Match other list items */
+  line-height: 1.2; /* Match other list items */
+  min-height: 1.2em !important;
 }
 .ProseMirror li[data-type="textTaskItem"]::before {
   content: "" !important;
@@ -145,13 +189,25 @@
 
 .ProseMirror ol {
   padding-left: 2.5em;
+  margin: 0.5em 0; /* Reduce overall list margins */
+}
+
+.ProseMirror ul {
+  margin: 0.5em 0; /* Reduce overall list margins */
 }
 .ProseMirror ol > li {
   list-style: decimal !important;
   padding-left: 0;
   position: static;
-  margin-bottom: 0.1em; /* Reduced margin for tighter spacing */
-  line-height: 1.3; /* Reduced line-height for more compact items */
+  margin-bottom: 0; /* Remove all bottom margin */
+  margin-top: 0; /* Remove all top margin */
+  line-height: 1.2; /* Further reduced line-height for more compact items */
+}
+
+/* Remove margins from paragraphs inside ordered list items */
+.ProseMirror ol > li p {
+  margin: 0 !important;
+  padding: 0;
 }
 .ProseMirror ol > li::before {
   content: "" !important;
@@ -216,8 +272,8 @@
 
 /* --- Slash Command Menu Styling --- */
 .tippy-box[data-theme~='slash-command-theme'] {
-  background-color: #2a2a2a;
-  border: 1px solid #444;
+  background-color: rgba(0,0,0,0.9);
+  border: 1px solid rgba(255,255,255,0.15);
   border-radius: 4px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
   color: #eaeaea;
@@ -227,10 +283,27 @@
   min-width: 200px;
 }
 
+/* Also target the tippy-content class used by our menu */
+.tippy-content {
+  background-color: rgba(0,0,0,0.9) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  border-radius: 4px !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6) !important;
+  color: #eaeaea !important;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace !important;
+  font-size: 14px !important;
+  padding: 0 !important;
+  min-width: 200px !important;
+}
+
 #slash-command-menu {
   padding: 5px;
   max-height: 300px;
   overflow-y: auto;
+  background-color: rgba(0,0,0,0.9) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  border-radius: 4px !important;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 #slash-command-menu .menu-title {
