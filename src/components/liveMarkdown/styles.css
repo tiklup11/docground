@@ -46,7 +46,7 @@
   flex-grow: 1; /* Make the editable area fill its container */
   width: 100%;
   min-height: 300px; /* Minimum editing height */
-  padding: 15px 325px; /* Vertical padding 15px, Horizontal padding 25px */
+  padding: 15px 100px; /* Vertical padding 15px, Horizontal padding 100px */
   box-sizing: border-box;
   outline: none; /* Remove default focus outline */
   border: 1px solid transparent; /* Border is now transparent by default */

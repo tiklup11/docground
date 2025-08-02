@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import type { Range, Editor } from "@tiptap/core"; // Import Node type
+
 import StarterKit from "@tiptap/starter-kit";
 import { Markdown } from "tiptap-markdown";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -28,6 +29,16 @@ import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 
 // Slash Command Imports
+
+// Define interface for Editor with markdown capabilities
+interface EditorWithMarkdown extends Editor {
+  getMarkdown?: () => string;
+  storage: {
+    markdown?: {
+      getMarkdown: () => string;
+    };
+  } & Editor['storage'];
+}
 
 interface LiveMarkdownEditorProps {
   initialContent: string;
@@ -186,13 +197,14 @@ const LiveMarkdownEditor: React.FC<LiveMarkdownEditorProps> = ({
     content: initialContent,
     onUpdate: ({ editor: currentEditor }) => {
       let newMarkdown = "";
-      if (typeof (currentEditor as any).getMarkdown === "function") {
-        newMarkdown = (currentEditor as any).getMarkdown();
+      const editorWithMarkdown = currentEditor as EditorWithMarkdown;
+      if (typeof editorWithMarkdown.getMarkdown === "function") {
+        newMarkdown = editorWithMarkdown.getMarkdown();
       } else if (
-        currentEditor.storage &&
-        typeof currentEditor.storage.markdown?.getMarkdown === "function"
+        editorWithMarkdown.storage &&
+        typeof editorWithMarkdown.storage.markdown?.getMarkdown === "function"
       ) {
-        newMarkdown = currentEditor.storage.markdown.getMarkdown();
+        newMarkdown = editorWithMarkdown.storage.markdown.getMarkdown();
       }
       onUpdate(newMarkdown);
 
@@ -234,13 +246,14 @@ const LiveMarkdownEditor: React.FC<LiveMarkdownEditorProps> = ({
   useEffect(() => {
     if (tiptapEditor) {
       let currentEditorMarkdown = "";
-      if (typeof (tiptapEditor as any).getMarkdown === "function") {
-        currentEditorMarkdown = (tiptapEditor as any).getMarkdown();
+      const editorWithMarkdown = tiptapEditor as EditorWithMarkdown;
+      if (typeof editorWithMarkdown.getMarkdown === "function") {
+        currentEditorMarkdown = editorWithMarkdown.getMarkdown();
       } else if (
-        tiptapEditor.storage &&
-        typeof tiptapEditor.storage.markdown?.getMarkdown === "function"
+        editorWithMarkdown.storage &&
+        typeof editorWithMarkdown.storage.markdown?.getMarkdown === "function"
       ) {
-        currentEditorMarkdown = tiptapEditor.storage.markdown.getMarkdown();
+        currentEditorMarkdown = editorWithMarkdown.storage.markdown.getMarkdown();
       }
       if (initialContent !== currentEditorMarkdown) {
         tiptapEditor.commands.setContent(initialContent, true);
@@ -252,8 +265,20 @@ const LiveMarkdownEditor: React.FC<LiveMarkdownEditorProps> = ({
     (item: SlashCommandItem) => {
       const currentEditor = editorRef.current;
       if (currentEditor && slashMenuRange) {
-        currentEditor.chain().focus().deleteRange(slashMenuRange).run(); // Delete trigger text
-        item.command({ editor: currentEditor, range: slashMenuRange }); // Execute command
+        // Ensure we delete the full trigger text including the "/"
+        const fullRange = {
+          from: slashMenuRange.from,
+          to: slashMenuRange.to
+        };
+        
+        // Check if there's a "/" at the start position and include it in deletion
+        const textAtRange = currentEditor.state.doc.textBetween(fullRange.from - 1, fullRange.to);
+        if (textAtRange.startsWith('/')) {
+          fullRange.from = fullRange.from - 1;
+        }
+        
+        currentEditor.chain().focus().deleteRange(fullRange).run(); // Delete trigger text including "/"
+        item.command({ editor: currentEditor, range: fullRange }); // Execute command
       }
       closeSlashMenuAndFocusEditor();
     },
@@ -326,18 +351,31 @@ const LiveMarkdownEditor: React.FC<LiveMarkdownEditorProps> = ({
         editor={tiptapEditor}
         className="live-editor-tiptap-container"
       />
-      {isSlashMenuOpen && slashMenuPosition && slashMenuProps && (
-        <div
-          style={{
-            position: "fixed",
-            top: `${slashMenuPosition.top + slashMenuPosition.height + 2}px`,
-            left: `${slashMenuPosition.left}px`,
-            zIndex: 100,
-          }}
-        >
-          <SlashCommandMenu ref={slashCommandMenuRef} {...slashMenuProps} />
-        </div>
-      )}
+      {isSlashMenuOpen && slashMenuPosition && slashMenuProps && (() => {
+        const menuHeight = 300; // Max height from CSS
+        const viewportHeight = window.innerHeight;
+        const spaceBelow = viewportHeight - (slashMenuPosition.top + slashMenuPosition.height);
+        const spaceAbove = slashMenuPosition.top;
+        
+        // Calculate optimal position
+        const shouldPositionAbove = spaceBelow < menuHeight && spaceAbove > menuHeight;
+        const topPosition = shouldPositionAbove
+          ? slashMenuPosition.top - menuHeight - 2
+          : slashMenuPosition.top + slashMenuPosition.height + 2;
+        
+        return (
+          <div
+            style={{
+              position: "fixed",
+              top: `${topPosition}px`,
+              left: `${slashMenuPosition.left}px`,
+              zIndex: 100,
+            }}
+          >
+            <SlashCommandMenu ref={slashCommandMenuRef} {...slashMenuProps} />
+          </div>
+        );
+      })()}
       {/* Placeholder for TableControlBar - will be added next */}
       {/* {isTableControlBarVisible && tableControlBarPosition && tiptapEditor && (
         <TableControlBar editor={tiptapEditor} position={tableControlBarPosition} />
