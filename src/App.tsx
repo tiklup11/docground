@@ -4,6 +4,9 @@ import "./hacker-theme.css"; // Import the hacker theme CSS
 import "./App.css"; // For TipTap editor specific styles and overrides
 
 import LiveMarkdownEditor from "./components/liveMarkdown/editor";
+import GitHubPanel from "./components/github/GitHubPanel";
+import type { FileContent } from "./services/github/types";
+import "./components/github/GitHubPanel.css";
 
 // Initial Markdown content for the editor
 const initialMarkdownContent = `# Welcome to Your Hacker Editor!
@@ -42,6 +45,7 @@ function App() {
   const [markdownText, setMarkdownText] = useState<string>(
     initialMarkdownContent
   );
+  const [showGitHubPanel, setShowGitHubPanel] = useState<boolean>(false);
 
   /**
    * Callback for LiveMarkdownEditor to update the central markdownText state.
@@ -51,24 +55,64 @@ function App() {
     setMarkdownText(newMarkdown);
   }, []);
 
+  /**
+   * Handle file selection from GitHub
+   */
+  const handleGitHubFileSelect = useCallback((file: FileContent) => {
+    setMarkdownText(file.content);
+    // Optionally close the panel after file selection
+    // setShowGitHubPanel(false);
+  }, []);
+
   return (
     <div className="app-container">
       <header className="app-header-placeholder">
-        {/* Placeholder for site header, actual styling by hacker-theme.css */}
+        {/* GitHub Panel Toggle */}
+        <button
+          className="github-toggle-button"
+          onClick={() => setShowGitHubPanel(!showGitHubPanel)}
+          style={{
+            position: 'fixed',
+            top: '20px',
+            right: '20px',
+            zIndex: 1000,
+            background: 'rgba(181, 232, 83, 0.1)',
+            border: '1px solid rgba(181, 232, 83, 0.3)',
+            borderRadius: '4px',
+            color: '#b5e853',
+            padding: '8px 12px',
+            fontFamily: 'Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace',
+            fontSize: '11px',
+            cursor: 'pointer',
+            fontWeight: 'bold'
+          }}
+        >
+          {showGitHubPanel ? 'Hide GitHub' : 'Show GitHub'}
+        </button>
       </header>
 
-      {/* The main content area where the live TipTap editor will reside.
-          It needs the .container and #main_content structure for the hacker-theme
-          to apply correctly to the overall page layout. The TipTap editor itself
-          will be styled by .ProseMirror and rules in app.css.
-      */}
-      <div className="container editor-main-container">
-        <section id="main_content" className="editor-section">
-          <LiveMarkdownEditor
-            initialContent={markdownText}
-            onUpdate={handleMarkdownUpdate}
-          />
-        </section>
+      <div style={{ display: 'flex', height: '100vh' }}>
+        {/* GitHub Panel */}
+        {showGitHubPanel && (
+          <div style={{
+            width: '400px',
+            flexShrink: 0,
+            borderRight: '1px solid rgba(255, 255, 255, 0.15)',
+            background: '#151515'
+          }}>
+            <GitHubPanel onFileSelect={handleGitHubFileSelect} />
+          </div>
+        )}
+
+        {/* The main content area where the live TipTap editor will reside */}
+        <div className="container editor-main-container" style={{ flex: 1 }}>
+          <section id="main_content" className="editor-section">
+            <LiveMarkdownEditor
+              initialContent={markdownText}
+              onUpdate={handleMarkdownUpdate}
+            />
+          </section>
+        </div>
       </div>
     </div>
   );

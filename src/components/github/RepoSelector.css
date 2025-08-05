@@ -1,0 +1,452 @@
+/* src/components/github/RepoSelector.css */
+
+.repo-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-size: 12px;
+  color: #eaeaea;
+}
+
+/* Section Labels */
+.repo-selector-label {
+  display: block;
+  margin-bottom: 6px;
+  color: #b5e853;
+  font-weight: bold;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+/* Dropdown Base Styles */
+.repo-dropdown,
+.branch-dropdown {
+  position: relative;
+}
+
+.repo-dropdown-button,
+.branch-dropdown-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  color: #eaeaea;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 36px;
+}
+
+.repo-dropdown-button:hover,
+.branch-dropdown-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.repo-dropdown-button:disabled,
+.branch-dropdown-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Button Content */
+.repo-button-content,
+.branch-button-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.repo-icon,
+.branch-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.repo-name,
+.branch-name {
+  flex: 1;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.repo-placeholder {
+  color: #888;
+  font-style: italic;
+}
+
+.repo-private-badge {
+  background: #f39c12;
+  color: #151515;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.loading-spinner {
+  animation: spin 1s linear infinite;
+  color: #b5e853;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.dropdown-arrow {
+  font-size: 10px;
+  color: #888;
+  transition: transform 0.2s ease;
+}
+
+.repo-dropdown-button[aria-expanded="true"] .dropdown-arrow,
+.branch-dropdown-button[aria-expanded="true"] .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Menus */
+.repo-dropdown-menu,
+.branch-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  margin-top: 4px;
+  max-height: 300px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Search Input */
+.repo-search {
+  padding: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.repo-search-input {
+  width: 100%;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+  color: #eaeaea;
+  font-family: inherit;
+  font-size: 11px;
+  outline: none;
+}
+
+.repo-search-input:focus {
+  border-color: #b5e853;
+  box-shadow: 0 0 0 1px rgba(181, 232, 83, 0.3);
+}
+
+.repo-search-input::placeholder {
+  color: #888;
+}
+
+/* Lists */
+.repo-list,
+.branch-list {
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+/* Repository Items */
+.repo-item {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #eaeaea;
+  font-family: inherit;
+  font-size: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.repo-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.repo-item.selected {
+  background: rgba(181, 232, 83, 0.2);
+  color: #b5e853;
+}
+
+.repo-item:last-child {
+  border-bottom: none;
+}
+
+.repo-item-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.repo-item-name {
+  font-weight: bold;
+  color: inherit;
+}
+
+.repo-item-badges {
+  display: flex;
+  gap: 4px;
+}
+
+.repo-item-description {
+  color: #888;
+  font-size: 10px;
+  margin-bottom: 6px;
+  line-height: 1.3;
+  max-height: 2.6em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.repo-item-stats {
+  display: flex;
+  gap: 12px;
+  font-size: 10px;
+  color: #666;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.stat-icon {
+  font-size: 9px;
+}
+
+.stat-value {
+  color: #888;
+}
+
+/* Branch Items */
+.branch-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 12px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #eaeaea;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.branch-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.branch-item.selected {
+  background: rgba(181, 232, 83, 0.2);
+  color: #b5e853;
+}
+
+.branch-item:last-child {
+  border-bottom: none;
+}
+
+.branch-item-name {
+  font-weight: 500;
+}
+
+.branch-item-badges {
+  display: flex;
+  gap: 4px;
+}
+
+/* Badges */
+.badge {
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.badge.private {
+  background: #f39c12;
+  color: #151515;
+}
+
+.badge.language {
+  background: rgba(255, 255, 255, 0.1);
+  color: #eaeaea;
+}
+
+.badge.default {
+  background: #3498db;
+  color: #ffffff;
+}
+
+.badge.protected {
+  background: #e74c3c;
+  color: #ffffff;
+}
+
+/* Empty States */
+.repo-item-empty,
+.branch-item-empty {
+  padding: 20px 12px;
+  text-align: center;
+  color: #888;
+  font-style: italic;
+}
+
+/* Dropdown Footer */
+.repo-dropdown-footer {
+  padding: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.refresh-button {
+  width: 100%;
+  padding: 6px 12px;
+  background: rgba(181, 232, 83, 0.1);
+  border: 1px solid rgba(181, 232, 83, 0.3);
+  border-radius: 3px;
+  color: #b5e853;
+  font-family: inherit;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.refresh-button:hover {
+  background: rgba(181, 232, 83, 0.2);
+  border-color: rgba(181, 232, 83, 0.5);
+}
+
+.refresh-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Error Display */
+.repo-selector-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  border-radius: 4px;
+  color: #e74c3c;
+  font-size: 11px;
+}
+
+.error-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.error-text {
+  flex: 1;
+}
+
+.error-retry {
+  background: none;
+  border: 1px solid rgba(231, 76, 60, 0.5);
+  border-radius: 3px;
+  color: #e74c3c;
+  padding: 4px 8px;
+  font-family: inherit;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.error-retry:hover {
+  background: rgba(231, 76, 60, 0.1);
+}
+
+/* Repository Info */
+.repo-info {
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  font-size: 10px;
+}
+
+.repo-info-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.repo-info-item:last-child {
+  margin-bottom: 0;
+}
+
+.info-label {
+  color: #888;
+}
+
+.info-value {
+  color: #eaeaea;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .repo-selector {
+    font-size: 11px;
+  }
+
+  .repo-dropdown-menu,
+  .branch-dropdown-menu {
+    max-height: 250px;
+  }
+
+  .repo-item-stats {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .repo-info {
+    font-size: 9px;
+  }
+}
+
+/* Dark Theme Overrides */
+@media (prefers-color-scheme: dark) {
+  .repo-dropdown-menu,
+  .branch-dropdown-menu {
+    background: #000000;
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .repo-search-input {
+    background: rgba(255, 255, 255, 0.03);
+  }
+}

@@ -1,0 +1,368 @@
+/* src/components/github/GitHubPanel.css */
+
+.github-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 600px;
+  min-height: 400px;
+  width: 100%;
+  max-width: 400px;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  background: #151515;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Panel Header */
+.github-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.panel-title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #b5e853;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Panel Content */
+.github-panel-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Unauthenticated State */
+.github-panel-content.unauthenticated {
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-prompt {
+  text-align: center;
+  max-width: 300px;
+}
+
+.auth-prompt-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.auth-prompt h4 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  color: #eaeaea;
+  font-weight: bold;
+}
+
+.auth-prompt p {
+  margin: 0 0 16px 0;
+  font-size: 12px;
+  color: #888;
+  line-height: 1.4;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.feature-list li {
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 6px;
+  padding-left: 0;
+}
+
+/* Authenticated State */
+.github-panel-content.authenticated {
+  gap: 16px;
+  padding: 16px;
+}
+
+.repository-section {
+  flex-shrink: 0;
+}
+
+.file-browser-section {
+  flex: 1;
+  min-height: 0;
+}
+
+/* No Repository Selected */
+.no-repo-selected {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-style: italic;
+}
+
+.no-repo-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+  opacity: 0.6;
+}
+
+.no-repo-selected p {
+  margin: 0;
+  font-size: 12px;
+}
+
+/* Auth Button Styles */
+.auth-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.auth-button.loading {
+  color: #888;
+}
+
+.auth-loading-spinner {
+  animation: spin 1s linear infinite;
+  color: #b5e853;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Authenticated User Info */
+.auth-button.authenticated {
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-avatar {
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.user-name {
+  color: #eaeaea;
+  font-weight: bold;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+.user-login {
+  color: #888;
+  font-size: 9px;
+}
+
+.logout-button {
+  background: rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  border-radius: 3px;
+  color: #e74c3c;
+  padding: 4px 8px;
+  font-family: inherit;
+  font-size: 9px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-button:hover {
+  background: rgba(231, 76, 60, 0.2);
+  border-color: rgba(231, 76, 60, 0.5);
+}
+
+/* Unauthenticated Login Button */
+.auth-button.unauthenticated {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.login-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(181, 232, 83, 0.1);
+  border: 1px solid rgba(181, 232, 83, 0.3);
+  border-radius: 4px;
+  color: #b5e853;
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: bold;
+}
+
+.login-button:hover {
+  background: rgba(181, 232, 83, 0.2);
+  border-color: rgba(181, 232, 83, 0.5);
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.github-icon {
+  font-size: 14px;
+}
+
+/* Auth Error */
+.auth-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  background: rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  border-radius: 3px;
+  color: #e74c3c;
+  font-size: 10px;
+  max-width: 200px;
+}
+
+.error-text {
+  flex: 1;
+  line-height: 1.3;
+}
+
+.error-dismiss {
+  background: none;
+  border: none;
+  color: #e74c3c;
+  cursor: pointer;
+  padding: 0;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.error-dismiss:hover {
+  color: #c0392b;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .github-panel {
+    max-width: 100%;
+    font-size: 11px;
+  }
+
+  .github-panel-header {
+    padding: 10px 12px;
+  }
+
+  .panel-title {
+    font-size: 12px;
+  }
+
+  .auth-prompt {
+    padding: 0 10px;
+  }
+
+  .auth-prompt h4 {
+    font-size: 16px;
+  }
+
+  .user-name {
+    max-width: 80px;
+  }
+
+  .github-panel-content.authenticated {
+    padding: 12px;
+    gap: 12px;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .github-panel {
+    border-color: #ffffff;
+  }
+
+  .github-panel-header {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .login-button {
+    background: rgba(181, 232, 83, 0.3);
+  }
+
+  .logout-button {
+    background: rgba(231, 76, 60, 0.3);
+  }
+}
+
+/* Dark Theme Adjustments */
+@media (prefers-color-scheme: dark) {
+  .github-panel {
+    background: #0a0a0a;
+  }
+
+  .auth-prompt-icon {
+    filter: brightness(0.9);
+  }
+}
+
+/* Loading States */
+.github-panel.loading {
+  pointer-events: none;
+}
+
+.github-panel.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+/* Focus Management */
+.github-panel:focus-within {
+  border-color: rgba(181, 232, 83, 0.5);
+  box-shadow: 0 0 0 1px rgba(181, 232, 83, 0.3);
+}
+
+/* Animation for State Changes */
+.github-panel-content {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.github-panel-content.transitioning {
+  opacity: 0.7;
+}

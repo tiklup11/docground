@@ -1,0 +1,427 @@
+/* src/components/github/FileBrowser.css */
+
+.file-browser {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-size: 12px;
+  color: #eaeaea;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* Header */
+.file-browser-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 36px;
+}
+
+/* Breadcrumb Navigation */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+}
+
+.breadcrumb-item {
+  background: none;
+  border: none;
+  color: #888;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.breadcrumb-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #eaeaea;
+}
+
+.breadcrumb-item.root {
+  color: #b5e853;
+  font-weight: bold;
+}
+
+.breadcrumb-item.current {
+  color: #eaeaea;
+  font-weight: 500;
+}
+
+.breadcrumb-separator {
+  color: #666;
+  margin: 0 4px;
+  font-size: 10px;
+}
+
+/* Header Actions */
+.file-browser-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.action-button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+  color: #eaeaea;
+  padding: 4px 8px;
+  font-family: inherit;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.action-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Error Display */
+.file-browser-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(231, 76, 60, 0.1);
+  border-bottom: 1px solid rgba(231, 76, 60, 0.3);
+  color: #e74c3c;
+  font-size: 11px;
+}
+
+.error-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.error-text {
+  flex: 1;
+}
+
+.error-retry {
+  background: none;
+  border: 1px solid rgba(231, 76, 60, 0.5);
+  border-radius: 3px;
+  color: #e74c3c;
+  padding: 2px 6px;
+  font-family: inherit;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.error-retry:hover {
+  background: rgba(231, 76, 60, 0.1);
+}
+
+/* File Tree */
+.file-tree {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Loading and Empty States */
+.loading-state,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: #888;
+  font-style: italic;
+}
+
+.loading-spinner {
+  font-size: 16px;
+  margin-bottom: 8px;
+  animation: spin 1s linear infinite;
+  color: #b5e853;
+}
+
+.empty-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* File List */
+.file-list {
+  padding: 4px 0;
+}
+
+/* File Items */
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.file-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.file-item.selected {
+  background: rgba(181, 232, 83, 0.15);
+  border-left: 3px solid #b5e853;
+}
+
+.file-item.loading {
+  opacity: 0.7;
+}
+
+.file-item.dir {
+  font-weight: 500;
+}
+
+.file-item.file {
+  font-weight: 400;
+}
+
+/* File Item Content */
+.file-item-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.file-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+}
+
+.file-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #eaeaea;
+}
+
+.file-item.dir .file-name {
+  color: #b5e853;
+}
+
+.file-loading {
+  font-size: 10px;
+  color: #b5e853;
+  animation: spin 1s linear infinite;
+}
+
+/* File Metadata */
+.file-metadata {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.file-size {
+  padding: 1px 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  font-family: inherit;
+}
+
+/* Footer */
+.file-browser-footer {
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 10px;
+}
+
+.status-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #888;
+}
+
+.item-count {
+  color: #666;
+}
+
+.branch-info {
+  color: #888;
+}
+
+.branch-info strong {
+  color: #b5e853;
+}
+
+/* File Type Specific Styles */
+.file-item[data-extension="md"] .file-name {
+  color: #f39c12;
+}
+
+.file-item[data-extension="js"] .file-name,
+.file-item[data-extension="ts"] .file-name {
+  color: #f1c40f;
+}
+
+.file-item[data-extension="jsx"] .file-name,
+.file-item[data-extension="tsx"] .file-name {
+  color: #61dafb;
+}
+
+.file-item[data-extension="py"] .file-name {
+  color: #3776ab;
+}
+
+.file-item[data-extension="json"] .file-name {
+  color: #ff6b6b;
+}
+
+.file-item[data-extension="css"] .file-name,
+.file-item[data-extension="scss"] .file-name {
+  color: #e74c3c;
+}
+
+.file-item[data-extension="html"] .file-name {
+  color: #e67e22;
+}
+
+/* Scrollbar Styling */
+.file-tree::-webkit-scrollbar {
+  width: 6px;
+}
+
+.file-tree::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.file-tree::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.file-tree::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Keyboard Navigation */
+.file-item:focus {
+  outline: 2px solid #b5e853;
+  outline-offset: -2px;
+  background: rgba(181, 232, 83, 0.1);
+}
+
+/* Context Menu Support */
+.file-item.context-menu-open {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Selection Indicators */
+.file-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: #b5e853;
+  transition: width 0.2s ease;
+}
+
+.file-item.selected::before {
+  width: 3px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .file-browser {
+    font-size: 11px;
+  }
+
+  .breadcrumb-item {
+    max-width: 100px;
+  }
+
+  .file-item {
+    padding: 8px 10px;
+  }
+
+  .file-metadata {
+    display: none;
+  }
+
+  .status-info {
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-start;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .file-browser {
+    border-color: #ffffff;
+  }
+
+  .file-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  .file-item.selected {
+    background: rgba(181, 232, 83, 0.3);
+  }
+}
+
+/* Animation for Directory Expansion */
+.file-item.dir.expanding .file-icon {
+  animation: expand 0.2s ease-in-out;
+}
+
+@keyframes expand {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(90deg); }
+}
+
+/* Drag and Drop Support (Future Enhancement) */
+.file-item.drag-over {
+  background: rgba(181, 232, 83, 0.2);
+  border: 2px dashed #b5e853;
+}
+
+.file-item.dragging {
+  opacity: 0.5;
+  transform: scale(0.95);
+}
