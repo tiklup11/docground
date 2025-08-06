@@ -1,6 +1,7 @@
-# CLAUDE.md
+# [CLAUDE.md](http://CLAUDE.md)
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This is docground live testing. \
+This file provides guidance to Claude Code ([claude.ai/code](http://claude.ai/code)) when working with code in this repository. 
 
 ## Development Commands
 
