@@ -1,7 +1,17 @@
 # [CLAUDE.md](http://CLAUDE.md)
 
 This is docground live testing. \
-This file provides guidance to Claude Code ([claude.ai/code](http://claude.ai/code)) when working with code in this repository. 
+This file provides guidance to Claude Code ([claude.ai/code](http://claude.ai/code)) when working with code in this repository.
+
+A
+
+<table style="min-width: 75px">
+<colgroup><col style="min-width: 25px"><col style="min-width: 25px"><col style="min-width: 25px"></colgroup><tbody><tr><th colspan="1" rowspan="1"><p>api</p></th><th colspan="1" rowspan="1"><p>req body</p></th><th colspan="1" rowspan="1"><p>response body</p></th></tr><tr><td colspan="1" rowspan="1"><p>GET /users/v1</p></td><td colspan="1" rowspan="1"><pre class="hljs"><code class="language-javascript">{
+    "user":"usr_id"
+}</code></pre></td><td colspan="1" rowspan="1"><pre class="hljs"><code class="language-javascript">{
+   success:true
+}</code></pre><p></p></td></tr><tr><td colspan="1" rowspan="1"><p></p></td><td colspan="1" rowspan="1"><p></p></td><td colspan="1" rowspan="1"><p></p></td></tr></tbody>
+</table>
 
 ## Development Commands
 
