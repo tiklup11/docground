@@ -1,5 +1,5 @@
 // src/components/github/FileBrowser.tsx
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import type { Repository, DirectoryItem, FileContent } from '../../services/github/types';
 import { getGitHubContentsService } from '../../services/github/contents';
 import { getGitHubAuthService } from '../../services/github/auth';
@@ -39,7 +39,7 @@ export const FileBrowser: React.FC<FileBrowserProps> = ({
   const contentsService = getGitHubContentsService(() => authService.getToken());
 
   // Load directory contents
-  const loadDirectory = async (path: string = '') => {
+  const loadDirectory = useCallback(async (path: string = '') => {
     if (loadingPaths.has(path)) return;
 
     setLoadingPaths(prev => new Set(prev).add(path));
@@ -82,7 +82,7 @@ export const FileBrowser: React.FC<FileBrowserProps> = ({
         return updated;
       });
     }
-  };
+  }, [repository, branch, contentsService]);
 
   // Build file tree structure
   const fileTree = useMemo(() => {
@@ -105,7 +105,7 @@ export const FileBrowser: React.FC<FileBrowserProps> = ({
       loadDirectory('')
         .finally(() => setIsLoading(false));
     }
-  }, [repository, branch]);
+  }, [repository, branch, loadDirectory]);
 
   // Handle directory expansion/collapse
   const toggleDirectory = async (path: string) => {
@@ -229,15 +229,15 @@ export const FileBrowser: React.FC<FileBrowserProps> = ({
     return `${(size / (1024 * 1024)).toFixed(1)} MB`;
   };
 
-  // Navigate up to parent directory
-  const navigateUp = () => {
-    if (currentPath) {
-      const parentPath = currentPath.split('/').slice(0, -1).join('/');
-      if (onPathChange) {
-        onPathChange(parentPath);
-      }
-    }
-  };
+  // Navigate up to parent directory (future use)
+  // const navigateUp = () => {
+  //   if (currentPath) {
+  //     const parentPath = currentPath.split('/').slice(0, -1).join('/');
+  //     if (onPathChange) {
+  //       onPathChange(parentPath);
+  //     }
+  //   }
+  // };
 
   return (
     <div className={`file-browser ${className}`}>

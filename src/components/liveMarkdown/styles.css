@@ -51,17 +51,17 @@
   outline: none; /* Remove default focus outline */
   border: 1px solid transparent; /* Border is now transparent by default */
   border-radius: 4px;
-  background-color: #151515; /* Match page background */
+  background-color: #000000; /* Match page background */
   color: #eaeaea; /* Base text color for editor content */
   line-height: 1.6; /* Readability for editor content */
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace; /* Theme font */
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Courier New', monospace; /* Theme font */
   overflow-y: auto; /* Scroll within the ProseMirror div */
 }
 
 .ProseMirror:focus {
   /* Border is already transparent from the base .ProseMirror rule */
   border-color: transparent; 
-  box-shadow: none; 
+ 
 }
 
 /* TipTap Placeholder styling */
@@ -141,7 +141,7 @@
   display: block !important;
   z-index: 10 !important;
   pointer-events: none !important;
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace !important;
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Courier New', monospace !important;
 }
 
 .ProseMirror li[data-type="textTaskItem"] {
@@ -164,7 +164,7 @@
 .ProseMirror .task-checkbox-text {
   color: #b5e853;
   font-weight: bold;
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Courier New', monospace;
   margin-right: 0.5em;
   user-select: none;
   cursor: pointer;
@@ -225,7 +225,7 @@
   word-wrap: normal;
   overflow: auto;
   overflow-y: hidden;
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Courier New', monospace;
   margin: 0.5em 0;
 }
 .ProseMirror pre code {
@@ -239,7 +239,7 @@
 .ProseMirror .tiptap-codeblock-node pre.highlight { /* If using custom node view for codeblock */
   color: #d0d0d0 !important;
   font-size: 14px;
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Courier New', monospace;
   margin: 0.5em 0;
   /* Other styles like background, border should come from hacker-theme.css .highlight or pre */
 }
@@ -254,7 +254,7 @@
   margin: 0 1px;
   color: #aa759f;
   border-radius: 3px;
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Courier New', monospace;
   font-size: 0.9em;
 }
 
@@ -303,7 +303,7 @@
   color: #b5e853;
   padding: 0;
   font-size: 12px;
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Courier New', monospace;
   font-weight: bold;
   cursor: pointer;
   outline: none;
@@ -318,7 +318,6 @@
   background: #0a0a0a;
   border: 1px solid rgba(255,255,255,0.15);
   border-radius: 4px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.8);
   z-index: 9999;
   min-width: 120px;
   max-height: 200px;
@@ -328,7 +327,7 @@
 
 .ProseMirror .code-block-language-option {
   padding: 6px 10px;
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Courier New', monospace;
   font-size: 11px;
   color: #eaeaea;
   cursor: pointer;
@@ -357,7 +356,7 @@
   padding: 4px 8px;
   border-radius: 3px;
   font-size: 11px;
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Courier New', monospace;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -390,7 +389,7 @@
   padding: 0 !important;
   margin: 0 !important;
   color: #d0d0d0 !important;
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace !important;
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Courier New', monospace !important;
 }
 
 .ProseMirror blockquote {}
@@ -434,9 +433,8 @@
   background-color: rgba(0,0,0,0.9);
   border: 1px solid rgba(255,255,255,0.15);
   border-radius: 4px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6);
   color: #eaeaea;
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Courier New', monospace;
   font-size: 14px;
   padding: 0;
   min-width: 200px;
@@ -447,9 +445,8 @@
   background-color: rgba(0,0,0,0.9) !important;
   border: 1px solid rgba(255,255,255,0.15) !important;
   border-radius: 4px !important;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6) !important;
   color: #eaeaea !important;
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace !important;
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Courier New', monospace !important;
   font-size: 14px !important;
   padding: 0 !important;
   min-width: 200px !important;
@@ -462,7 +459,6 @@
   background-color: rgba(0,0,0,0.9) !important;
   border: 1px solid rgba(255,255,255,0.15) !important;
   border-radius: 4px !important;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6) !important;
 }
 
 #slash-command-menu .menu-title {

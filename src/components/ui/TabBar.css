@@ -1,0 +1,142 @@
+/* src/components/ui/TabBar.css */
+
+.tab-bar {
+  background: var(--nvim-bg);
+  border-bottom: 1px solid var(--theme-border-light);
+  display: flex;
+  align-items: center;
+  height: 28px;
+  overflow: hidden;
+}
+
+.tab-list {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.tab-list::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 14px;
+  background: var(--theme-surface);
+  border-right: 1px solid var(--theme-border-light);
+  color: var(--nvim-text);
+  cursor: pointer;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  min-width: 0;
+  max-width: 200px;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.tab:hover {
+  background: var(--nvim-bg-light);
+  color: var(--nvim-text-bright);
+}
+
+.tab-active {
+  background: var(--nvim-bg-light) !important;
+  color: var(--nvim-blue) !important;
+}
+
+
+.tab-icon {
+  font-size: 14px;
+  color: var(--nvim-blue);
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+}
+
+.tab-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.tab-dirty {
+  color: var(--nvim-red);
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-left: 2px;
+}
+
+.tab-close {
+  background: none;
+  border: none;
+  color: var(--nvim-text-dim);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0;
+  margin-left: 4px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.tab-close:hover {
+  background: rgba(229, 94, 94, 0.2);
+  color: var(--nvim-red);
+}
+
+.tab-new {
+  background: none;
+  border: none;
+  color: var(--nvim-text-dim);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1;
+  padding: 2px 12px;
+  height: 100%;
+  transition: all 0.15s ease;
+}
+
+.tab-new:hover {
+  background: var(--nvim-bg-light);
+  color: var(--nvim-blue);
+}
+
+/* Scrollbar for tab overflow */
+.tab-list {
+  scrollbar-width: thin;
+  scrollbar-color: var(--nvim-text-dim) transparent;
+}
+
+.tab-list::-webkit-scrollbar {
+  height: 3px;
+}
+
+.tab-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tab-list::-webkit-scrollbar-thumb {
+  background: var(--nvim-text-dim);
+  border-radius: 2px;
+}
+
+.tab-list::-webkit-scrollbar-thumb:hover {
+  background: var(--nvim-text);
+}

@@ -2,12 +2,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
+import { ThemeProvider } from "./themes/ThemeContext";
 // DO NOT import hacker-theme.css here if already imported in App.tsx
 // import './index.css' // if you have one
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>
 );
 

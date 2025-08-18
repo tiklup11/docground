@@ -1,5 +1,5 @@
 // src/components/github/AuthButton.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import type { GitHubUser } from '../../services/github/types';
 import { getGitHubAuthService, isOAuthCallback, handleOAuthCallback } from '../../services/github/auth';
 
@@ -20,25 +20,7 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
 
   const authService = getGitHubAuthService();
 
-  // Check authentication status on mount
-  useEffect(() => {
-    checkAuthStatus();
-    
-    // Handle OAuth callback if present (only once)
-    if (isOAuthCallback() && !callbackHandled) {
-      setCallbackHandled(true);
-      handleAuthCallback();
-    }
-  }, []); // Empty dependency array to run only once
-
-  // Notify parent component of auth changes
-  useEffect(() => {
-    if (onAuthChange) {
-      onAuthChange(isAuthenticated, user);
-    }
-  }, [isAuthenticated, user, onAuthChange]);
-
-  const checkAuthStatus = async () => {
+  const checkAuthStatus = useCallback(async () => {
     try {
       const authenticated = authService.isAuthenticated();
       setIsAuthenticated(authenticated);
@@ -59,9 +41,9 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
       setIsAuthenticated(false);
       setUser(null);
     }
-  };
+  }, [authService]);
 
-  const handleAuthCallback = async () => {
+  const handleAuthCallback = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
@@ -74,9 +56,9 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [checkAuthStatus]);
 
-  const handleLogin = async () => {
+  const handleLogin = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
@@ -87,7 +69,7 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
       setError('Failed to start authentication. Please try again.');
       setIsLoading(false);
     }
-  };
+  }, [authService]);
 
   const handleLogout = () => {
     authService.logout();
@@ -95,6 +77,24 @@ export const AuthButton: React.FC<AuthButtonProps> = ({
     setUser(null);
     setError(null);
   };
+
+  // Check authentication status on mount
+  useEffect(() => {
+    checkAuthStatus();
+    
+    // Handle OAuth callback if present (only once)
+    if (isOAuthCallback() && !callbackHandled) {
+      setCallbackHandled(true);
+      handleAuthCallback();
+    }
+  }, [callbackHandled, checkAuthStatus, handleAuthCallback]); // Run when dependencies change
+
+  // Notify parent component of auth changes
+  useEffect(() => {
+    if (onAuthChange) {
+      onAuthChange(isAuthenticated, user);
+    }
+  }, [isAuthenticated, user, onAuthChange]);
 
   if (isLoading) {
     return (

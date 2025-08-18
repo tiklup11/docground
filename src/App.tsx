@@ -1,12 +1,16 @@
 // src/App.tsx
 import { useState, useCallback } from "react";
-import "./hacker-theme.css"; // Import the hacker theme CSS
+import "./neovim-theme.css"; // Import the Neovim theme CSS
 import "./App.css"; // For TipTap editor specific styles and overrides
 
 import LiveMarkdownEditor from "./components/liveMarkdown/editor";
-import GitHubPanel from "./components/github/GitHubPanel";
-import type { FileContent } from "./services/github/types";
-import "./components/github/GitHubPanel.css";
+import TabBar, { TabFile } from "./components/ui/TabBar";
+import FileTree from "./components/ui/FileTree";
+import StatusBar from "./components/ui/StatusBar";
+import { SettingsDialog } from "./components/ui/SettingsDialog";
+import type { FileContent, Repository } from "./services/github/types";
+import { getGitHubContentsService } from "./services/github/contents";
+import { getGitHubAuthService } from "./services/github/auth";
 
 // Initial Markdown content for the editor
 const initialMarkdownContent = `# Welcome to Your Hacker Editor!
@@ -40,80 +44,249 @@ Pasting Markdown content should also work! Try pasting some from another source.
 `;
 
 function App() {
-  // markdownText remains the source of truth for persistence.
-  // TipTap will be initialized with this and will update this state.
-  const [markdownText, setMarkdownText] = useState<string>(
-    initialMarkdownContent
-  );
-  const [showGitHubPanel, setShowGitHubPanel] = useState<boolean>(false);
+  // Tab system state
+  const [tabs, setTabs] = useState<TabFile[]>([
+    {
+      id: 'welcome',
+      name: 'Welcome.md',
+      path: 'Welcome.md',
+      content: initialMarkdownContent,
+      isDirty: false,
+      isGitHubFile: false,
+    }
+  ]);
+  const [activeTabId, setActiveTabId] = useState<string>('welcome');
+  
+  // GitHub integration state
+  const [currentRepository, setCurrentRepository] = useState<Repository | null>(null);
+  const [currentBranch, setCurrentBranch] = useState<string>('');
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  
+  // UI state
+  const [showSettingsDialog, setShowSettingsDialog] = useState<boolean>(false);
+  
+  // Save state
+  const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+
+  // Get current tab
+  const currentTab = tabs.find(tab => tab.id === activeTabId);
+  const markdownText = currentTab?.content || '';
+  
+  // Suppress unused variable warnings for now
+  void isSaving;
+  void saveError;
 
   /**
-   * Callback for LiveMarkdownEditor to update the central markdownText state.
-   * This is triggered when TipTap's content changes and is serialized to Markdown.
+   * Callback for LiveMarkdownEditor to update the current tab content.
    */
   const handleMarkdownUpdate = useCallback((newMarkdown: string) => {
-    setMarkdownText(newMarkdown);
+    if (!activeTabId) return;
+    
+    setTabs(prevTabs => 
+      prevTabs.map(tab => 
+        tab.id === activeTabId 
+          ? { ...tab, content: newMarkdown, isDirty: true }
+          : tab
+      )
+    );
+  }, [activeTabId]);
+
+  /**
+   * Handle repository and branch selection from GitHub Panel
+   */
+  const handleGitHubRepoSelect = useCallback((repository: Repository | null, branch: string) => {
+    setCurrentRepository(repository);
+    setCurrentBranch(branch);
   }, []);
 
   /**
-   * Handle file selection from GitHub
+   * Handle authentication state changes from GitHub integration
    */
-  const handleGitHubFileSelect = useCallback((file: FileContent) => {
-    setMarkdownText(file.content);
-    // Optionally close the panel after file selection
-    // setShowGitHubPanel(false);
+  const handleAuthStateChange = useCallback((authenticated: boolean) => {
+    setIsAuthenticated(authenticated);
+    if (!authenticated) {
+      setCurrentRepository(null);
+      setCurrentBranch('');
+    }
   }, []);
 
+  /**
+   * Handle file selection from GitHub - opens in new tab
+   */
+  const handleGitHubFileSelect = useCallback((file: FileContent, repository: Repository, branch: string) => {
+    const tabId = `github-${file.path}`;
+    
+    // Check if file is already open
+    const existingTab = tabs.find(tab => tab.id === tabId);
+    if (existingTab) {
+      setActiveTabId(tabId);
+      return;
+    }
+
+    // Create new tab for GitHub file
+    const newTab: TabFile = {
+      id: tabId,
+      name: file.name,
+      path: file.path,
+      content: file.content,
+      isDirty: false,
+      isGitHubFile: true,
+    };
+
+    setTabs(prevTabs => [...prevTabs, newTab]);
+    setActiveTabId(tabId);
+    setCurrentRepository(repository);
+    setCurrentBranch(branch);
+    setSaveError(null);
+  }, [tabs]);
+
+  /**
+   * Tab management functions
+   */
+  const handleTabSelect = useCallback((tabId: string) => {
+    setActiveTabId(tabId);
+  }, []);
+
+  const handleTabClose = useCallback((tabId: string) => {
+    setTabs(prevTabs => {
+      const filtered = prevTabs.filter(tab => tab.id !== tabId);
+      
+      // If closing active tab, switch to another tab
+      if (tabId === activeTabId) {
+        const currentIndex = prevTabs.findIndex(tab => tab.id === tabId);
+        const nextTab = filtered[currentIndex] || filtered[currentIndex - 1] || filtered[0];
+        setActiveTabId(nextTab?.id || '');
+      }
+      
+      return filtered;
+    });
+  }, [activeTabId]);
+
+  const handleNewTab = useCallback(() => {
+    const newTabId = `untitled-${Date.now()}`;
+    const newTab: TabFile = {
+      id: newTabId,
+      name: 'Untitled.md',
+      path: 'Untitled.md',
+      content: '# New Document\n\nStart typing...',
+      isDirty: false,
+      isGitHubFile: false,
+    };
+
+    setTabs(prevTabs => [...prevTabs, newTab]);
+    setActiveTabId(newTabId);
+  }, []);
+
+  /**
+   * Handle saving current content to GitHub
+   */
+  const handleSaveToGitHub = useCallback(async (commitMessage: string) => {
+    if (!currentTab?.isGitHubFile || !currentRepository || !currentBranch) {
+      throw new Error('No GitHub file selected for saving');
+    }
+
+    setIsSaving(true);
+    setSaveError(null);
+    try {
+      const authService = getGitHubAuthService();
+      const contentsService = getGitHubContentsService(() => authService.getToken());
+      
+      const result = await contentsService.updateFile(
+        currentRepository.owner.login,
+        currentRepository.name,
+        currentTab.path,
+        currentTab.content || '',
+        commitMessage,
+        '', // SHA should be stored in tab metadata
+        currentBranch
+      );
+
+      // Update tab to mark as saved
+      setTabs(prevTabs => 
+        prevTabs.map(tab => 
+          tab.id === activeTabId 
+            ? { ...tab, isDirty: false }
+            : tab
+        )
+      );
+      
+      console.log('File saved successfully:', result);
+    } catch (error) {
+      console.error('Failed to save file:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      setSaveError(errorMessage);
+      throw error;
+    } finally {
+      setIsSaving(false);
+    }
+  }, [currentTab, currentRepository, currentBranch, activeTabId]);
+
   return (
-    <div className="app-container">
-      <header className="app-header-placeholder">
-        {/* GitHub Panel Toggle */}
-        <button
-          className="github-toggle-button"
-          onClick={() => setShowGitHubPanel(!showGitHubPanel)}
-          style={{
-            position: 'fixed',
-            top: '20px',
-            right: '20px',
-            zIndex: 1000,
-            background: 'rgba(181, 232, 83, 0.1)',
-            border: '1px solid rgba(181, 232, 83, 0.3)',
-            borderRadius: '4px',
-            color: '#b5e853',
-            padding: '8px 12px',
-            fontFamily: 'Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace',
-            fontSize: '11px',
-            cursor: 'pointer',
-            fontWeight: 'bold'
-          }}
-        >
-          {showGitHubPanel ? 'Hide GitHub' : 'Show GitHub'}
-        </button>
-      </header>
+    <div className="nvim-app">
 
-      <div style={{ display: 'flex', height: '100vh' }}>
-        {/* GitHub Panel */}
-        {showGitHubPanel && (
-          <div style={{
-            width: '400px',
-            flexShrink: 0,
-            borderRight: '1px solid rgba(255, 255, 255, 0.15)',
-            background: '#151515'
-          }}>
-            <GitHubPanel onFileSelect={handleGitHubFileSelect} />
-          </div>
-        )}
+      {/* Main Neovim-style Layout */}
+      <div className="nvim-layout">
+        {/* Left Sidebar - File Tree */}
+        <div className="nvim-sidebar">
+          <FileTree
+            repository={currentRepository}
+            branch={currentBranch}
+            onFileSelect={handleGitHubFileSelect}
+          />
+        </div>
 
-        {/* The main content area where the live TipTap editor will reside */}
-        <div className="container editor-main-container" style={{ flex: 1 }}>
-          <section id="main_content" className="editor-section">
+        {/* Main Content Area */}
+        <div className="nvim-main">
+          {/* Tab Bar */}
+          <TabBar
+            tabs={tabs}
+            activeTabId={activeTabId}
+            onTabSelect={handleTabSelect}
+            onTabClose={handleTabClose}
+            onNewTab={handleNewTab}
+          />
+
+          {/* Editor */}
+          <div className="nvim-editor">
             <LiveMarkdownEditor
+              key={activeTabId} // Force re-render when tab changes
               initialContent={markdownText}
               onUpdate={handleMarkdownUpdate}
             />
-          </section>
+          </div>
         </div>
       </div>
+
+      {/* Status Bar */}
+      <StatusBar
+        repository={currentRepository}
+        branch={currentBranch}
+        currentFile={currentTab?.path || null}
+        hasUnsavedChanges={currentTab?.isDirty || false}
+        isAuthenticated={isAuthenticated}
+        onCommit={handleSaveToGitHub}
+      />
+
+      {/* Floating Controls */}
+      <div className="floating-controls">
+        <button
+          className="settings-toggle-floating"
+          onClick={() => setShowSettingsDialog(true)}
+          title="Settings"
+        >
+          ⚙️
+        </button>
+      </div>
+
+      {/* Settings Dialog */}
+      <SettingsDialog
+        isOpen={showSettingsDialog}
+        onClose={() => setShowSettingsDialog(false)}
+        onFileSelect={handleGitHubFileSelect}
+        onRepoSelect={handleGitHubRepoSelect}
+        onAuthChange={handleAuthStateChange}
+      />
     </div>
   );
 }

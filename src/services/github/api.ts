@@ -4,7 +4,6 @@ import type {
   ApiResponse,
   GitHubError,
   RateLimitInfo,
-  GitHubAuthToken,
 } from './types';
 
 export class GitHubApiError extends Error {
@@ -219,7 +218,7 @@ export class GitHubApiClient {
       }
 
       // Handle timeout errors
-      if (error.name === 'AbortError') {
+      if ((error as Error).name === 'AbortError') {
         throw new GitHubApiError('Request timeout', 408);
       }
 

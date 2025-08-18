@@ -8,7 +8,7 @@ import { Markdown } from "tiptap-markdown";
 import Placeholder from "@tiptap/extension-placeholder";
 import Link from "@tiptap/extension-link";
 import { createLowlight } from 'lowlight';
-import { inputRules, textblockTypeInputRule, Extension } from '@tiptap/core';
+import { Extension } from '@tiptap/core';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
 import { CustomCodeBlockExtension } from '../../editor/extensions/customCodeBlockExtension';
 
@@ -46,7 +46,7 @@ const InstantCodeBlock = Extension.create({
     return [
       new Plugin({
         key: new PluginKey('instantCodeBlock'),
-        appendTransaction(transactions, oldState, newState) {
+        appendTransaction(transactions, _oldState, newState) {
           const tr = newState.tr;
           let modified = false;
           
@@ -54,9 +54,9 @@ const InstantCodeBlock = Extension.create({
             if (!transaction.docChanged) return;
             
             transaction.steps.forEach(step => {
-              if (step.jsonID === 'replace' || step.jsonID === 'replaceAround') {
-                const { from, to } = step as any;
-                const insertedText = step.slice?.content?.textBetween(0, step.slice.content.size) || '';
+              if ((step as any).jsonID === 'replace' || (step as any).jsonID === 'replaceAround') {
+                const { from } = step as any;
+                const insertedText = (step as any).slice?.content?.textBetween(0, (step as any).slice.content.size) || '';
                 
                 // Check if we just typed the third backtick
                 if (insertedText === '`') {
@@ -260,26 +260,6 @@ const LiveMarkdownEditor: React.FC<LiveMarkdownEditorProps> = ({
         lowlight,
         HTMLAttributes: {
           class: 'hljs', // For syntax highlighting styles
-        },
-        // Add keyboard shortcuts and input rules
-        addKeyboardShortcuts() {
-          return {
-            'Mod-Alt-c': () => this.editor.commands.toggleCodeBlock(),
-          };
-        },
-        addInputRules() {
-          return [
-            // Trigger on ``` followed by space
-            textblockTypeInputRule({
-              find: /^```\s$/,
-              type: this.type,
-            }),
-            // Also try to catch ``` at end of line
-            textblockTypeInputRule({
-              find: /^```$/,
-              type: this.type,
-            }),
-          ];
         },
       }),
       InstantCodeBlock,

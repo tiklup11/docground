@@ -6,7 +6,6 @@ import type {
   CreateFileRequest,
   UpdateFileRequest,
   DeleteFileRequest,
-  FileSearchParams,
 } from './types';
 import { getGitHubApiClient } from './api';
 
@@ -148,8 +147,6 @@ export class GitHubContentsService {
     branch?: string,
     author?: { name: string; email: string }
   ): Promise<{ commit: any }> {
-    const apiClient = getGitHubApiClient(this.getToken);
-
     const data: DeleteFileRequest = {
       message,
       sha,
@@ -158,10 +155,6 @@ export class GitHubContentsService {
     };
 
     try {
-      const response = await apiClient.delete<{ commit: any }>(`/repos/${owner}/${repo}/contents/${path}`, {
-        'Content-Type': 'application/json',
-      });
-
       // For DELETE requests, we need to send the data as JSON in the request body
       const deleteResponse = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
         method: 'DELETE',

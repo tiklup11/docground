@@ -33,7 +33,7 @@ const LANGUAGES = [
   { value: 'latex', label: 'LaTeX' },
 ];
 
-export const CustomCodeBlockComponent: React.FC<NodeViewProps> = ({ node, updateAttributes, extension }) => {
+export const CustomCodeBlockComponent: React.FC<NodeViewProps> = ({ node, updateAttributes }) => {
   const [showCopied, setShowCopied] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });

@@ -1,5 +1,5 @@
 // src/components/github/RepoSelector.tsx
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import type { Repository, Branch } from '../../services/github/types';
 import { getGitHubRepositoryService } from '../../services/github/repositories';
 import { getGitHubAuthService } from '../../services/github/auth';
@@ -43,21 +43,7 @@ export const RepoSelector: React.FC<RepoSelectorProps> = ({
     );
   }, [repositories, searchQuery]);
 
-  // Load repositories on component mount
-  useEffect(() => {
-    loadRepositories();
-  }, []);
-
-  // Load branches when repository changes
-  useEffect(() => {
-    if (selectedRepository) {
-      loadBranches(selectedRepository.owner.login, selectedRepository.name);
-    } else {
-      setBranches([]);
-    }
-  }, [selectedRepository]);
-
-  const loadRepositories = async () => {
+  const loadRepositories = useCallback(async () => {
     if (!authService.isAuthenticated()) return;
 
     setIsLoadingRepos(true);
@@ -76,9 +62,9 @@ export const RepoSelector: React.FC<RepoSelectorProps> = ({
     } finally {
       setIsLoadingRepos(false);
     }
-  };
+  }, [authService, repositoryService]);
 
-  const loadBranches = async (owner: string, repo: string) => {
+  const loadBranches = useCallback(async (owner: string, repo: string) => {
     setIsLoadingBranches(true);
     setError(null);
 
@@ -97,7 +83,7 @@ export const RepoSelector: React.FC<RepoSelectorProps> = ({
     } finally {
       setIsLoadingBranches(false);
     }
-  };
+  }, [repositoryService, selectedBranch, selectedRepository?.default_branch, onBranchSelect]);
 
   const handleRepositorySelect = (repo: Repository) => {
     onRepositorySelect(repo);
@@ -123,6 +109,20 @@ export const RepoSelector: React.FC<RepoSelectorProps> = ({
     }
     return branchName;
   };
+
+  // Load repositories on component mount
+  useEffect(() => {
+    loadRepositories();
+  }, [loadRepositories]);
+
+  // Load branches when repository changes
+  useEffect(() => {
+    if (selectedRepository) {
+      loadBranches(selectedRepository.owner.login, selectedRepository.name);
+    } else {
+      setBranches([]);
+    }
+  }, [selectedRepository, loadBranches]);
 
   return (
     <div className={`repo-selector ${className}`}>

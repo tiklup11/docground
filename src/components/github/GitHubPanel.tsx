@@ -8,16 +8,22 @@ import './RepoSelector.css';
 import './FileBrowser.css';
 
 interface GitHubPanelProps {
-  onFileSelect?: (file: FileContent) => void;
+  onFileSelect?: (file: FileContent, repository: Repository, branch: string) => void;
+  onRepoSelect?: (repository: Repository | null, branch: string) => void;
+  onAuthChange?: (authenticated: boolean, user: GitHubUser | null) => void;
+  onClose?: () => void;
   className?: string;
 }
 
 export const GitHubPanel: React.FC<GitHubPanelProps> = ({
   onFileSelect,
+  onRepoSelect,
+  onAuthChange,
+  onClose,
   className = '',
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<GitHubUser | null>(null);
+  const [, setUser] = useState<GitHubUser | null>(null);
   const [selectedRepository, setSelectedRepository] = useState<Repository | null>(null);
   const [selectedBranch, setSelectedBranch] = useState<string>('');
   const [currentPath, setCurrentPath] = useState<string>('');
@@ -26,27 +32,44 @@ export const GitHubPanel: React.FC<GitHubPanelProps> = ({
     setIsAuthenticated(authenticated);
     setUser(currentUser);
     
+    // Notify parent component
+    if (onAuthChange) {
+      onAuthChange(authenticated, currentUser);
+    }
+    
     // Reset selections when auth changes
     if (!authenticated) {
       setSelectedRepository(null);
       setSelectedBranch('');
       setCurrentPath('');
+      // Notify parent that repository is cleared
+      if (onRepoSelect) {
+        onRepoSelect(null, '');
+      }
     }
   };
 
   const handleRepositorySelect = (repo: Repository) => {
     setSelectedRepository(repo);
     setCurrentPath(''); // Reset path when changing repository
+    // Notify parent of repository selection
+    if (onRepoSelect) {
+      onRepoSelect(repo, selectedBranch);
+    }
   };
 
   const handleBranchSelect = (branch: string) => {
     setSelectedBranch(branch);
     setCurrentPath(''); // Reset path when changing branch
+    // Notify parent of branch selection
+    if (onRepoSelect && selectedRepository) {
+      onRepoSelect(selectedRepository, branch);
+    }
   };
 
   const handleFileSelect = (file: FileContent) => {
-    if (onFileSelect) {
-      onFileSelect(file);
+    if (onFileSelect && selectedRepository && selectedBranch) {
+      onFileSelect(file, selectedRepository, selectedBranch);
     }
   };
 
@@ -58,7 +81,14 @@ export const GitHubPanel: React.FC<GitHubPanelProps> = ({
     <div className={`github-panel ${className}`}>
       <div className="github-panel-header">
         <h3 className="panel-title">GitHub Integration</h3>
-        <AuthButton onAuthChange={handleAuthChange} />
+        <div className="github-panel-header-actions">
+          <AuthButton onAuthChange={handleAuthChange} />
+          {onClose && (
+            <button className="github-panel-close-header" onClick={onClose} title="Close">
+              ×
+            </button>
+          )}
+        </div>
       </div>
 
       {!isAuthenticated ? (

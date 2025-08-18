@@ -1,44 +1,156 @@
-/* src/App.css - Application layout styles only */
+/* Neovim-style App Layout */
 
-/* --- Application Shell & Layout --- */
-.app-container {
+.nvim-app {
+  width: 100vw;
+  height: 100vh;
+  background: var(--nvim-bg);
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  /* Base font, bg, color are inherited from body (hacker-theme.css) */
+  overflow: hidden;
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', Consolas, 'Courier New', monospace;
 }
 
-.app-header-placeholder {
-  height: 0;
+.nvim-layout {
+  flex: 1;
+  display: flex;
   overflow: hidden;
 }
 
-.editor-main-container.container {
-  width: 100%;
-  max-width: none; /* Override theme for editor full width */
-  /* Horizontal padding for the overall editor container, can be adjusted */
-  padding: 0 20px; 
-  margin: 0 auto;
-  flex-grow: 1;
-  display: flex;
-  box-sizing: border-box;
+.nvim-sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  background: var(--nvim-bg);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.editor-section#main_content {
-  width: 100%;
-  height: calc(100vh - 0px); /* Adjust if app-header-placeholder has height */
-  padding: 10px 0; /* Vertical padding for the section */
-  box-sizing: border-box;
-  overflow-y: auto; /* Scroll for the entire editor section if content overflows */
+.nvim-main {
+  flex: 1;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
-/* --- TipTap Editor Container Styling --- */
+.nvim-editor {
+  flex: 1;
+  overflow: hidden;
+  background: var(--nvim-bg);
+  border: 1px solid var(--nvim-border);
+  border-top: none;
+  border-bottom: none;
+}
+
+
+
+/* Floating Controls Container */
+.floating-controls {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 999;
+}
+
+/* Floating Buttons */
+.settings-toggle-floating {
+  background: rgba(181, 232, 83, 0.1);
+  border: 1px solid rgba(160, 160, 160, 0.5);
+  border-radius: 0;
+  color: var(--nvim-blue);
+  width: 48px;
+  height: 48px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+  font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+}
+
+.settings-toggle-floating:hover {
+  background: rgba(181, 232, 83, 0.2);
+  border-color: rgba(181, 232, 83, 0.5);
+  transform: scale(1.05);
+}
+
+.settings-toggle-floating {
+  font-size: 16px;
+}
+
+/* Editor content adjustments */
 .live-editor-tiptap-container {
-  flex-grow: 1; /* Allow TipTap container to fill editor-section */
-  display: flex; /* Allow ProseMirror to fill this container */
-  flex-direction: column; /* Ensure ProseMirror takes height */
+  height: 100%;
+  background: var(--nvim-bg) !important;
 }
 
-/* All TipTap editor styles (.ProseMirror) are consolidated in src/components/liveMarkdown/styles.css */
+.live-editor-tiptap-container .ProseMirror {
+  padding: 20px !important;
+  height: calc(100vh - 64px) !important; /* Account for tab bar and status bar with new borders */
+  overflow-y: auto !important;
+  background: var(--nvim-bg) !important;
+  color: var(--nvim-text-bright) !important;
+  border: none !important;
+  outline: none !important;
+}
+
+.live-editor-tiptap-container .ProseMirror:focus {
+  outline: none !important;
+}
+
+/* Custom scrollbar for editor */
+.live-editor-tiptap-container .ProseMirror {
+  scrollbar-width: thin;
+  scrollbar-color: var(--nvim-text-dim) transparent;
+}
+
+.live-editor-tiptap-container .ProseMirror::-webkit-scrollbar {
+  width: 8px;
+}
+
+.live-editor-tiptap-container .ProseMirror::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.live-editor-tiptap-container .ProseMirror::-webkit-scrollbar-thumb {
+  background: var(--nvim-text-dim);
+  border-radius: 4px;
+}
+
+.live-editor-tiptap-container .ProseMirror::-webkit-scrollbar-thumb:hover {
+  background: var(--nvim-text);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .nvim-sidebar {
+    width: 250px;
+  }
+  
+  .github-panel-container {
+    width: 95%;
+    min-width: 320px;
+    max-width: 420px;
+    max-height: 90vh;
+  }
+  
+}
+
+@media (max-width: 600px) {
+  .nvim-sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 24px; /* Account for status bar */
+    z-index: 100;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .nvim-sidebar.open {
+    transform: translateX(0);
+  }
+}

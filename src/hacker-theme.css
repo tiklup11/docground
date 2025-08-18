@@ -87,11 +87,11 @@
 body {
     margin: 0;
     padding: 0;
-    background: #151515 url("../images/bkg.png") 0 0; /* Ensure path is correct for Vite (e.g., /images/bkg.png if in public/images) */
+    background: #000000; /* Pitch black background */
     color: #eaeaea;
     font-size: 16px;
     line-height: 1.5;
-    font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+    font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Courier New', monospace;
 }
 
 .container {
@@ -108,7 +108,7 @@ section {
 h1,h2,h3,h4,h5,h6 {
     margin: 0 0 20px;
     font-weight: normal;
-    font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+    font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Courier New', monospace;
     color: #b5e853;
     letter-spacing: -0.03em;
     text-shadow: 0 1px 1px rgba(0,0,0,0.1),0 0 5px rgba(181,232,83,0.1),0 0 10px rgba(181,232,83,0.1);
@@ -202,7 +202,7 @@ pre {
     word-wrap: normal;
     overflow: auto;
     overflow-y: hidden;
-    font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+    font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Courier New', monospace;
 }
 
 /* This is for inline code as per original theme */
@@ -213,7 +213,7 @@ code.highlighter-rouge {
     margin: 0px -3px;
     color: #aa759f;
     border-radius: 2px;
-    font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+    font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Courier New', monospace;
 }
 
 /* TipTap's inline code mark usually just renders <code> */
@@ -245,24 +245,23 @@ hr {
 
 .btn {
     display: inline-block;
-    background: -webkit-linear-gradient(top, rgba(40,40,40,0.3), rgba(35,35,35,0.3) 50%, rgba(10,10,10,0.3) 50%, rgba(0,0,0,0.3));
+    background: rgba(40,40,40,0.3);
     padding: 8px 18px;
     border-radius: 50px;
     border: 2px solid rgba(0,0,0,0.7);
     border-bottom: 2px solid rgba(0,0,0,0.7);
     border-top: 2px solid #000;
     color: rgba(255,255,255,0.8);
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: 'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, 'Courier New', monospace;
     font-weight: bold;
     font-size: 13px;
     text-decoration: none;
     text-shadow: 0 -1px 0 rgba(0,0,0,0.75);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
     cursor: pointer;
 }
 
 .btn:hover {
-    background: -webkit-linear-gradient(top, rgba(40,40,40,0.6), rgba(35,35,35,0.6) 50%, rgba(10,10,10,0.8) 50%, rgba(0,0,0,0.8));
+    background: rgba(60,60,60,0.6);
 }
 
 .btn .icon {

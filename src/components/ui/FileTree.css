@@ -1,0 +1,191 @@
+/* src/components/ui/FileTree.css */
+
+.file-tree {
+  background: var(--nvim-bg);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-ui);
+  color: var(--nvim-text);
+  font-size: 13px;
+}
+
+.file-tree-header {
+  padding: 10px 12px;
+  background: var(--theme-surface);
+  border-bottom: 1px solid var(--theme-border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.file-tree-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+}
+
+.file-tree-title {
+  font-weight: 700; /* Bold weight for IBM Plex Mono */
+  color: var(--nvim-blue);
+  font-size: 14px;
+}
+
+.file-tree-branch {
+  font-size: 11px;
+  color: var(--nvim-text-dim);
+  font-style: italic;
+}
+
+.file-tree-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.file-tree-empty {
+  padding: 20px 12px;
+  text-align: center;
+  color: var(--nvim-text-dim);
+  font-style: italic;
+}
+
+.tree-node {
+  cursor: pointer;
+  padding: 2px 0;
+  user-select: none;
+  transition: background-color 0.1s ease;
+  line-height: 1.4;
+  border-left: 1px solid transparent;
+  margin: 1px 0;
+}
+
+.tree-node:hover {
+  background: rgba(181, 232, 83, 0.1);
+  border-left: 1px solid rgba(160, 192, 144, 0.5);
+}
+
+.tree-node-selected {
+  background: rgba(181, 232, 83, 0.15) !important;
+  border-left: 1px solid var(--nvim-blue) !important;
+  color: var(--nvim-text-bright);
+}
+
+.tree-node-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-right: 8px;
+}
+
+.tree-node-arrow {
+  width: 12px;
+  font-size: 10px;
+  color: var(--nvim-text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.tree-node-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+  width: 20px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--nvim-blue);
+}
+
+.tree-node-dir-icon {
+  color: var(--nvim-yellow);
+  font-size: 14px;
+}
+
+.tree-node-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.tree-node-git-status {
+  font-size: 11px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.tree-node-directory .tree-node-name {
+  font-weight: 500;
+}
+
+.tree-node-file:hover .tree-node-name {
+  color: var(--nvim-text-bright);
+}
+
+/* Custom scrollbar */
+.file-tree-content {
+  scrollbar-width: thin;
+  scrollbar-color: var(--nvim-text-dim) transparent;
+}
+
+.file-tree-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.file-tree-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.file-tree-content::-webkit-scrollbar-thumb {
+  background: var(--nvim-text-dim);
+  border-radius: 3px;
+}
+
+.file-tree-content::-webkit-scrollbar-thumb:hover {
+  background: var(--nvim-text);
+}
+
+/* Special file type styling */
+.tree-node-name {
+  position: relative;
+}
+
+/* Git files */
+.tree-node-file [data-name*=".git"] .tree-node-name,
+.tree-node-file [data-name*="gitignore"] .tree-node-name {
+  color: var(--nvim-cyan);
+}
+
+/* Config files */
+.tree-node-file [data-name*="package.json"] .tree-node-name,
+.tree-node-file [data-name*="config"] .tree-node-name {
+  color: var(--nvim-yellow);
+}
+
+/* Markdown files */
+.tree-node-file [data-name*=".md"] .tree-node-name {
+  color: var(--nvim-blue);
+}
+
+/* Loading animation */
+.tree-node-arrow {
+  animation: none;
+}
+
+.tree-node-arrow:contains('⟳') {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

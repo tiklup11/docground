@@ -4,16 +4,16 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-family: var(--font-ui);
   font-size: 12px;
-  color: #eaeaea;
+  color: var(--nvim-text);
 }
 
 /* Section Labels */
 .repo-selector-label {
   display: block;
   margin-bottom: 6px;
-  color: #b5e853;
+  color: var(--nvim-blue);
   font-weight: bold;
   font-size: 11px;
   text-transform: uppercase;
@@ -32,10 +32,10 @@
   align-items: center;
   justify-content: space-between;
   padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--nvim-bg-light) !important;
+  border: 1px solid var(--nvim-border);
   border-radius: 4px;
-  color: #eaeaea;
+  color: var(--nvim-text) !important;
   font-family: inherit;
   font-size: inherit;
   cursor: pointer;
@@ -45,8 +45,8 @@
 
 .repo-dropdown-button:hover,
 .branch-dropdown-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.25);
+  background: var(--theme-surface);
+  border-color: var(--nvim-text-dim);
 }
 
 .repo-dropdown-button:disabled,
@@ -86,7 +86,7 @@
 }
 
 .repo-private-badge {
-  background: #f39c12;
+  background: var(--nvim-yellow);
   color: #151515;
   padding: 2px 6px;
   border-radius: 3px;
@@ -96,7 +96,7 @@
 
 .loading-spinner {
   animation: spin 1s linear infinite;
-  color: #b5e853;
+  color: var(--nvim-blue);
 }
 
 @keyframes spin {
@@ -122,10 +122,9 @@
   top: 100%;
   left: 0;
   right: 0;
-  background: #0a0a0a;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--nvim-bg-dark);
+  border: 1px solid var(--nvim-border);
   border-radius: 4px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
   z-index: 1000;
   margin-top: 4px;
   max-height: 300px;
@@ -137,24 +136,23 @@
 /* Search Input */
 .repo-search {
   padding: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--theme-border-light);
 }
 
 .repo-search-input {
   width: 100%;
   padding: 6px 8px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--nvim-bg-light);
+  border: 1px solid var(--nvim-border);
   border-radius: 3px;
-  color: #eaeaea;
+  color: var(--nvim-text);
   font-family: inherit;
   font-size: 11px;
   outline: none;
 }
 
 .repo-search-input:focus {
-  border-color: #b5e853;
-  box-shadow: 0 0 0 1px rgba(181, 232, 83, 0.3);
+  border-color: var(--nvim-blue);
 }
 
 .repo-search-input::placeholder {
@@ -175,8 +173,8 @@
   padding: 10px 12px;
   background: none;
   border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  color: #eaeaea;
+  border-bottom: 1px solid var(--theme-border-light);
+  color: var(--nvim-text);
   font-family: inherit;
   font-size: inherit;
   text-align: left;
@@ -185,12 +183,12 @@
 }
 
 .repo-item:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--theme-surface);
 }
 
 .repo-item.selected {
   background: rgba(181, 232, 83, 0.2);
-  color: #b5e853;
+  color: var(--nvim-blue);
 }
 
 .repo-item:last-child {
@@ -254,8 +252,8 @@
   padding: 8px 12px;
   background: none;
   border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  color: #eaeaea;
+  border-bottom: 1px solid var(--theme-border-light);
+  color: var(--nvim-text);
   font-family: inherit;
   font-size: inherit;
   cursor: pointer;
@@ -263,12 +261,12 @@
 }
 
 .branch-item:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--theme-surface);
 }
 
 .branch-item.selected {
   background: rgba(181, 232, 83, 0.2);
-  color: #b5e853;
+  color: var(--nvim-blue);
 }
 
 .branch-item:last-child {
@@ -294,22 +292,22 @@
 }
 
 .badge.private {
-  background: #f39c12;
+  background: var(--nvim-yellow);
   color: #151515;
 }
 
 .badge.language {
-  background: rgba(255, 255, 255, 0.1);
-  color: #eaeaea;
+  background: var(--theme-surface);
+  color: var(--nvim-text);
 }
 
 .badge.default {
-  background: #3498db;
+  background: var(--nvim-blue);
   color: #ffffff;
 }
 
 .badge.protected {
-  background: #e74c3c;
+  background: var(--nvim-red);
   color: #ffffff;
 }
 
@@ -334,7 +332,7 @@
   background: rgba(181, 232, 83, 0.1);
   border: 1px solid rgba(181, 232, 83, 0.3);
   border-radius: 3px;
-  color: #b5e853;
+  color: var(--nvim-blue);
   font-family: inherit;
   font-size: 10px;
   cursor: pointer;
@@ -360,7 +358,7 @@
   background: rgba(231, 76, 60, 0.1);
   border: 1px solid rgba(231, 76, 60, 0.3);
   border-radius: 4px;
-  color: #e74c3c;
+  color: var(--nvim-red);
   font-size: 11px;
 }
 
@@ -377,7 +375,7 @@
   background: none;
   border: 1px solid rgba(231, 76, 60, 0.5);
   border-radius: 3px;
-  color: #e74c3c;
+  color: var(--nvim-red);
   padding: 4px 8px;
   font-family: inherit;
   font-size: 10px;
@@ -413,7 +411,7 @@
 }
 
 .info-value {
-  color: #eaeaea;
+  color: var(--nvim-text);
   font-weight: 500;
 }
 
@@ -442,7 +440,7 @@
 @media (prefers-color-scheme: dark) {
   .repo-dropdown-menu,
   .branch-dropdown-menu {
-    background: #000000;
+    background: var(--nvim-bg);
     border-color: rgba(255, 255, 255, 0.2);
   }
 
