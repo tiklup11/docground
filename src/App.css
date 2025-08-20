@@ -107,6 +107,33 @@
   scrollbar-color: var(--nvim-text-dim) transparent;
 }
 
+/* Simple Table Styling for ProseMirror Editor */
+.ProseMirror table {
+  width: 100% !important;
+  margin: 0 0 20px 0 !important;
+  border-collapse: collapse !important;
+}
+
+.ProseMirror th {
+  text-align: left !important;
+  border-bottom: 1px dashed #b5e853 !important;
+  border-right: 1px dashed #b5e853 !important;
+  padding: 5px 10px !important;
+}
+
+.ProseMirror th:last-child {
+  border-right: none !important;
+}
+
+.ProseMirror td {
+  padding: 5px 10px !important;
+  border-right: 1px dashed #b5e853 !important;
+}
+
+.ProseMirror td:last-child {
+  border-right: none !important;
+}
+
 .live-editor-tiptap-container .ProseMirror::-webkit-scrollbar {
   width: 8px;
 }

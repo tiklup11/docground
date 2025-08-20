@@ -117,6 +117,50 @@ export const slashCommands: SlashCommandItem[] = [
     },
   },
   {
+    id: "addColumn",
+    title: "Add Column",
+    aliases: ["col+", "addcol"],
+    description: "Add column to current table",
+    command: ({ editor }) => {
+      if (editor.isActive('table')) {
+        editor.chain().focus().addColumnAfter().run();
+      }
+    },
+  },
+  {
+    id: "addRow",
+    title: "Add Row",
+    aliases: ["row+", "addrow"],
+    description: "Add row to current table",
+    command: ({ editor }) => {
+      if (editor.isActive('table')) {
+        editor.chain().focus().addRowAfter().run();
+      }
+    },
+  },
+  {
+    id: "deleteColumn",
+    title: "Delete Column",
+    aliases: ["col-", "delcol"],
+    description: "Delete current column",
+    command: ({ editor }) => {
+      if (editor.isActive('table')) {
+        editor.chain().focus().deleteColumn().run();
+      }
+    },
+  },
+  {
+    id: "deleteRow",
+    title: "Delete Row", 
+    aliases: ["row-", "delrow"],
+    description: "Delete current row",
+    command: ({ editor }) => {
+      if (editor.isActive('table')) {
+        editor.chain().focus().deleteRow().run();
+      }
+    },
+  },
+  {
     id: "paragraph",
     title: "Paragraph",
     aliases: ["p", "text"],

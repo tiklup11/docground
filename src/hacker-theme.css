@@ -228,11 +228,21 @@ table {
 th {
     text-align: left;
     border-bottom: 1px dashed #b5e853;
+    border-right: 1px dashed #b5e853;
     padding: 5px 10px;
+}
+
+th:last-child {
+    border-right: none;
 }
 
 td {
     padding: 5px 10px;
+    border-right: 1px dashed #b5e853;
+}
+
+td:last-child {
+    border-right: none;
 }
 
 hr {

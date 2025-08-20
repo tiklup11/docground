@@ -36,6 +36,26 @@ helloWorld("Developer");
 
 \`Inline code\` looks like this.
 
+## Table Example
+
+Check out this table with vertical and horizontal dashed lines:
+
+| Feature | Status | Priority | Developer | Timeline | Notes |
+|---------|--------|----------|-----------|----------|--------|
+| Table Lines | ✅ Complete | High | Claude | Today | Both vertical and horizontal |
+| Column Adding | 🔧 Testing | High | Claude | Today | Should work beyond 3 columns |
+| Simple Styling | ✅ Complete | High | Claude | Today | Clean dashed lines |
+| Table Editing | ✅ Complete | Medium | TipTap | Built-in | Click to edit any cell |
+
+**Table Controls:**
+- \`/table\` - Create a new table
+- \`/addcolumn\` or \`/col+\` - Add column (when in a table)  
+- \`/addrow\` or \`/row+\` - Add row (when in a table)
+- \`/delcol\` or \`/col-\` - Delete column (when in a table)
+- \`/delrow\` or \`/row-\` - Delete row (when in a table)
+
+Click in any table cell and use these slash commands!
+
 ---
 
 A horizontal rule.

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import type { Repository, DirectoryItem, FileContent } from '../../services/github/types';
 import { getGitHubContentsService } from '../../services/github/contents';
 import { getGitHubAuthService } from '../../services/github/auth';
+import './FileBrowser.css';
 
 interface FileBrowserProps {
   repository: Repository;

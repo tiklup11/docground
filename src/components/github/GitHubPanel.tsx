@@ -4,6 +4,7 @@ import type { Repository, GitHubUser, FileContent } from '../../services/github/
 import AuthButton from './AuthButton';
 import RepoSelector from './RepoSelector';
 import FileBrowser from './FileBrowser';
+import './GitHubPanel.css';
 import './RepoSelector.css';
 import './FileBrowser.css';
 

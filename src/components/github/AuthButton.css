@@ -1,0 +1,161 @@
+/* src/components/github/AuthButton.css */
+
+/* Auth Button Styles */
+.auth-button {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  font-family: var(--font-ui) !important;
+  font-size: 11px !important;
+}
+
+.auth-button.loading {
+  color: var(--nvim-text-dim);
+}
+
+.auth-loading-spinner {
+  animation: spin 1s linear infinite;
+  color: var(--nvim-blue);
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Authenticated User Info */
+.auth-button.authenticated {
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-avatar {
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.user-name {
+  color: var(--nvim-text-bright);
+  font-weight: bold;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+.user-login {
+  color: var(--nvim-text-dim);
+  font-size: 9px;
+}
+
+.logout-button {
+  background: rgba(231, 76, 60, 0.1) !important;
+  border: 1px solid rgba(231, 76, 60, 0.3) !important;
+  border-radius: 3px !important;
+  color: var(--nvim-red) !important;
+  padding: 4px 8px !important;
+  font-family: var(--font-ui) !important;
+  font-size: 9px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.logout-button:hover {
+  background: rgba(231, 76, 60, 0.2) !important;
+  border-color: rgba(231, 76, 60, 0.5) !important;
+}
+
+/* Unauthenticated Login Button */
+.auth-button.unauthenticated {
+  flex-direction: column;
+  gap: 8px;
+}
+
+.login-button {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: rgba(181, 232, 83, 0.1) !important;
+  border: 1px solid rgba(181, 232, 83, 0.3) !important;
+  border-radius: 4px !important;
+  color: var(--nvim-blue) !important;
+  padding: 8px 12px !important;
+  font-family: var(--font-ui) !important;
+  font-size: 11px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  font-weight: bold !important;
+}
+
+.login-button:hover {
+  background: rgba(181, 232, 83, 0.2) !important;
+  border-color: rgba(181, 232, 83, 0.5) !important;
+}
+
+.login-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.github-icon {
+  font-size: 14px;
+}
+
+/* Auth Error */
+.auth-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  background: rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  border-radius: 3px;
+  color: var(--nvim-red);
+  font-size: 10px;
+  max-width: 200px;
+  margin-top: 8px;
+}
+
+.error-text {
+  flex: 1;
+  line-height: 1.3;
+}
+
+.error-dismiss {
+  background: none;
+  border: none;
+  color: var(--nvim-red);
+  cursor: pointer;
+  padding: 0;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.error-dismiss:hover {
+  color: #c0392b;
+}
+
+/* Context-specific overrides */
+.github-settings-auth .auth-button {
+  width: 100%;
+  justify-content: center;
+}
+
+.github-settings-auth .auth-button.authenticated {
+  align-items: center;
+}

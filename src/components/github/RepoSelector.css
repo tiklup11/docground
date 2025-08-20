@@ -27,26 +27,26 @@
 
 .repo-dropdown-button,
 .branch-dropdown-button {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 12px;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 8px 12px !important;
   background: var(--nvim-bg-light) !important;
-  border: 1px solid var(--nvim-border);
-  border-radius: 4px;
+  border: 1px solid var(--nvim-border) !important;
+  border-radius: 4px !important;
   color: var(--nvim-text) !important;
-  font-family: inherit;
-  font-size: inherit;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  min-height: 36px;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  min-height: 36px !important;
 }
 
 .repo-dropdown-button:hover,
 .branch-dropdown-button:hover {
-  background: var(--theme-surface);
-  border-color: var(--nvim-text-dim);
+  background: var(--theme-surface) !important;
+  border-color: var(--nvim-text-dim) !important;
 }
 
 .repo-dropdown-button:disabled,
@@ -136,7 +136,7 @@
 /* Search Input */
 .repo-search {
   padding: 8px;
-  border-bottom: 1px solid var(--theme-border-light);
+  border-bottom: 1px solid var(--nvim-border);
 }
 
 .repo-search-input {
@@ -173,7 +173,7 @@
   padding: 10px 12px;
   background: none;
   border: none;
-  border-bottom: 1px solid var(--theme-border-light);
+  border-bottom: 1px solid var(--nvim-border);
   color: var(--nvim-text);
   font-family: inherit;
   font-size: inherit;
@@ -252,7 +252,7 @@
   padding: 8px 12px;
   background: none;
   border: none;
-  border-bottom: 1px solid var(--theme-border-light);
+  border-bottom: 1px solid var(--nvim-border);
   color: var(--nvim-text);
   font-family: inherit;
   font-size: inherit;

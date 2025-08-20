@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import type { Repository, Branch } from '../../services/github/types';
 import { getGitHubRepositoryService } from '../../services/github/repositories';
 import { getGitHubAuthService } from '../../services/github/auth';
+import './RepoSelector.css';
 
 interface RepoSelectorProps {
   selectedRepository: Repository | null;

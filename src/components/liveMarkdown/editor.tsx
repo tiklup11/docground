@@ -281,7 +281,8 @@ const LiveMarkdownEditor: React.FC<LiveMarkdownEditorProps> = ({
       // Add Table Extensions
       Table.configure({
         resizable: true, // Enable column resizing
-        // cellMinWidth: 50, // Optional: set a minimum width for cells
+        allowTableNodeSelection: true, // Allow table selection
+        // Remove any artificial limits on table size
       }),
       TableRow,
       TableHeader, // For <th> cells

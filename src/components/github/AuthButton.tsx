@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import type { GitHubUser } from '../../services/github/types';
 import { getGitHubAuthService, isOAuthCallback, handleOAuthCallback } from '../../services/github/auth';
+import './AuthButton.css';
 
 interface AuthButtonProps {
   onAuthChange?: (isAuthenticated: boolean, user: GitHubUser | null) => void;
